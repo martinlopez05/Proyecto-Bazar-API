@@ -40,9 +40,13 @@ public class Cliente {
         this.dni = dni;
     }
 
-
-
-
+    public Cliente(String nombre, String apellido, Long id_cliente, List<Venta> ventas, String dni) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.id_cliente = id_cliente;
+        this.ventas = ventas;
+        this.dni = dni;
+    }
 
 
 }

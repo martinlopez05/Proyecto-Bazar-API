@@ -4,6 +4,7 @@ import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,4 +37,19 @@ public class ProductoService implements IProductoService {
     public void editProducto(Producto producto) {
        producRepo.saveProducto(producto);
     }
+
+    @Override
+    public List<Producto> getStockMen5(){
+
+        List<Producto> prodStockMen5 = new ArrayList<>();
+        for(Producto prod : producRepo.getProductos()){
+            if(prod.getStock()<5){
+                prodStockMen5.add(prod);
+            }
+        }
+
+        return prodStockMen5;
+    }
+
+
 }
