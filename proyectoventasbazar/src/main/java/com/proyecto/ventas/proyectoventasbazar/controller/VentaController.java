@@ -52,12 +52,11 @@ public class VentaController {
     public Venta editarVenta(@PathVariable Long codigo_venta,@RequestBody Venta venta){
         Venta ventaEditar = ventaServ.findVenta(codigo_venta);
         ventaEditar.setFecha_venta(venta.getFecha_venta());
-        ventaEditar.setProductos(venta.getProductos());
         ventaEditar.setTotal(venta.getTotal());
         ventaEditar.setCliente(venta.getCliente());
 
         ventaServ.editVenta(ventaEditar);
-        return ventaServ.findVenta(ventaEditar.getCodigo_venta());
+        return ventaServ.findVenta(codigo_venta);
 
     }
 

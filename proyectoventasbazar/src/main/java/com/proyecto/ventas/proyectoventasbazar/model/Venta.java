@@ -1,5 +1,7 @@
 package com.proyecto.ventas.proyectoventasbazar.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,21 +21,25 @@ public class Venta {
     private LocalDate fecha_venta;
     private Double total;
 
-    @OneToMany(mappedBy = "venta")
-    private List<Producto> productos;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
+    @JsonBackReference
     private Cliente cliente;
+
+
+    @OneToMany(mappedBy = "venta")
+    @JsonManagedReference
+    private List<DetalleVenta> detalles;
 
     public Venta() {
     }
 
-    public Venta(Long codigo_venta, LocalDate fecha_venta, Double total, Cliente cliente, List<Producto> productos) {
+    public Venta(Long codigo_venta, LocalDate fecha_venta, Double total, Cliente cliente, List<DetalleVenta> detalles) {
         this.codigo_venta = codigo_venta;
         this.fecha_venta = fecha_venta;
         this.total = total;
         this.cliente = cliente;
-        this.productos = productos;
+        this.detalles = detalles;
     }
 }

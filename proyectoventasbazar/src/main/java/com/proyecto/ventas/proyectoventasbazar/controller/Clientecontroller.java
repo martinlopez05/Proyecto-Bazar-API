@@ -19,7 +19,7 @@ public class Clientecontroller {
         return clienteServ.getClientes();
     }
 
-    @GetMapping("/clientes/{id_cliente")
+    @GetMapping("/clientes/{id_cliente}")
     public Cliente traerCliente(@PathVariable Long id_cliente){
         return clienteServ.findCliente(id_cliente);
     }
@@ -38,7 +38,7 @@ public class Clientecontroller {
     }
 
 
-    @PutMapping("/clientes/eidtar/{id_cliente}")
+    @PutMapping("/clientes/editar/{id_cliente}")
     public Cliente editarCliente(@PathVariable Long id_cliente,@RequestBody Cliente cliente){
         Cliente clienteEditar = clienteServ.findCliente(id_cliente);
         clienteEditar.setNombre(cliente.getNombre());
@@ -48,7 +48,7 @@ public class Clientecontroller {
 
 
         clienteServ.editCliente(clienteEditar);
-        return clienteServ.findCliente(clienteEditar.getId_cliente());
+        return clienteServ.findCliente(id_cliente);
 
     }
 

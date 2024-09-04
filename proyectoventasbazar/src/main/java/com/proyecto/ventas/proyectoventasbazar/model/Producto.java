@@ -2,9 +2,12 @@ package com.proyecto.ventas.proyectoventasbazar.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 
 @Getter
@@ -20,9 +23,10 @@ public class Producto {
        private Double costo;
        private Double stock;
 
-       @ManyToOne
-       @JoinColumn(name = "id_venta")
-       private Venta venta;
+       @OneToMany(mappedBy = "producto")
+       @JsonManagedReference
+       private List<DetalleVenta> detalles;
+
 
        public Producto(Long codigo_producto, String nombre, String marca, Double costo, Double stock) {
            this.codigo_producto = codigo_producto;
@@ -33,6 +37,7 @@ public class Producto {
        }
 
        public Producto() {
+
        }
 
 

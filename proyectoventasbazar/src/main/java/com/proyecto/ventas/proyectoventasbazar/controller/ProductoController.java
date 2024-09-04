@@ -47,10 +47,9 @@ public class ProductoController {
             productoEditar.setCosto(producto.getCosto());
             productoEditar.setMarca(producto.getMarca());
             productoEditar.setStock(producto.getStock());
-            productoEditar.setVenta(producto.getVenta());
 
             producServ.editProducto(productoEditar);
 
-            return producServ.findProducto(productoEditar.getCodigo_producto());
+            return producServ.findProducto(codigo_producto);
     }
 }
