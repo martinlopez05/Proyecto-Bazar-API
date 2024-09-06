@@ -10,7 +10,7 @@ public interface IDetalleVentaService{
     public DetalleVenta findDetalle(Long id);
     public void saveDetalle(DetalleVenta detalle);
     public void deleteDetalle(Long id);
-    public void editDetalle(DetalleVenta detalle);
+    public void editDetalle(Long id_detalle,DetalleVenta detalle);
 
 }
 

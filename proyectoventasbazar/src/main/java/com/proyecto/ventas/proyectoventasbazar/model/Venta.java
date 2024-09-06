@@ -39,10 +39,13 @@ public class Venta {
         this.fecha_venta = fecha_venta;
         this.cliente = cliente;
         this.detalles = new ArrayList<>();
-        this.total= calcularTotal();
     }
 
-    public double calcularTotal(){
+
+
+    @PrePersist
+    @PreUpdate
+    public void calcularTotal(){
 
         double totalVenta = 0;
 
@@ -50,7 +53,7 @@ public class Venta {
                totalVenta+=detalle.getPrecio();
         }
 
-        return totalVenta;
+        this.total = totalVenta;
     }
 
     public void agregarDetalle(DetalleVenta detalle){

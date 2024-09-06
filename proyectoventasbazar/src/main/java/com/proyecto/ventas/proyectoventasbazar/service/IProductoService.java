@@ -11,7 +11,7 @@ public interface IProductoService {
     public Producto findProducto(Long id);
     public void saveProducto(Producto producto);
     public void deleteProducto(Long id);
-    public void editProducto(Producto producto);
+    public void editProducto(Long codigo_producto,Producto producto);
     public List<Producto> getStockMen5();
 
 }

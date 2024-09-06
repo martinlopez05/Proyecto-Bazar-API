@@ -40,15 +40,8 @@ public class Clientecontroller {
 
     @PutMapping("/clientes/editar/{id_cliente}")
     public Cliente editarCliente(@PathVariable Long id_cliente,@RequestBody Cliente cliente){
-        Cliente clienteEditar = clienteServ.findCliente(id_cliente);
-        clienteEditar.setNombre(cliente.getNombre());
-        clienteEditar.setApellido(cliente.getApellido());
-        clienteEditar.setVentas(cliente.getVentas());
-        clienteEditar.setDni(cliente.getDni());
-
-
-        clienteServ.editCliente(clienteEditar);
-        return clienteServ.findCliente(id_cliente);
+           clienteServ.editCliente(id_cliente,cliente);
+           return clienteServ.findCliente(id_cliente);
 
     }
 

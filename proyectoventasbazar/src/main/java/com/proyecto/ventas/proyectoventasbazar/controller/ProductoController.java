@@ -41,15 +41,8 @@ public class ProductoController {
 
     @PutMapping("/productos/editar/{codigo_producto}")
     public Producto editarProducto(@PathVariable Long codigo_producto,@RequestBody Producto producto){
-            Producto productoEditar = producServ.findProducto(codigo_producto);
+           producServ.editProducto(codigo_producto,producto);
+           return producServ.findProducto(codigo_producto);
 
-            productoEditar.setNombre(producto.getNombre());
-            productoEditar.setCosto(producto.getCosto());
-            productoEditar.setMarca(producto.getMarca());
-            productoEditar.setStock(producto.getStock());
-
-            producServ.editProducto(productoEditar);
-
-            return producServ.findProducto(codigo_producto);
     }
 }

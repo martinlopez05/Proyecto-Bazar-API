@@ -32,16 +32,11 @@ public class DetalleVentaController {
         return "Detalle eliminado correctamente";
     }
 
+    //FALTAN MODIFICAR TODAS LAS FUNCIONES DE SERVICE DE EDITAR Y ADEMAS DTOS
     @PutMapping("/detalles/editar/{id_detalle}")
     public DetalleVenta editarDetalleVenta(@PathVariable Long id_detalle, @RequestBody DetalleVenta detalle){
-        DetalleVenta detalleEditar = detalleServ.findDetalle(id_detalle);
-        detalleEditar.setCantidad(detalle.getCantidad());
-        detalleEditar.setProducto(detalle.getProducto());
-        detalleEditar.setVenta(detalle.getVenta());
-
-        detalleServ.editDetalle(detalleEditar);
+        detalleServ.editDetalle(id_detalle,detalle);
         return detalleServ.findDetalle(id_detalle);
-
     }
 
 }

@@ -58,14 +58,8 @@ public class VentaController {
 
     @PutMapping("/ventas/editar/{codigo_venta}")
     public Venta editarVenta(@PathVariable Long codigo_venta,@RequestBody Venta venta){
-        Venta ventaEditar = ventaServ.findVenta(codigo_venta);
-        ventaEditar.setFecha_venta(venta.getFecha_venta());
-        ventaEditar.setTotal(venta.getTotal());
-        ventaEditar.setCliente(venta.getCliente());
-
-        ventaServ.editVenta(ventaEditar);
+        ventaServ.editVenta(codigo_venta,venta);
         return ventaServ.findVenta(codigo_venta);
-
     }
 
 
