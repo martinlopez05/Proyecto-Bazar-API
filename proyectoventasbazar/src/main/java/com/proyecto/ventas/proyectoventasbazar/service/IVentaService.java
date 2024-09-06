@@ -14,7 +14,7 @@ public interface IVentaService {
     public Venta findVenta(Long id);
     public void saveVenta(VentaDTO ventaDTO);
     public void deleteVenta(Long id);
-    public void editVenta(Venta venta);
+    public void editVenta(Long codigo_venta,Venta venta);
     public List<Producto> getProductosVenta(Long id);
     public String getMontoyCantidad(LocalDate fecha);
     public List<Venta> getVentasPorCliente(Long id_cliente);

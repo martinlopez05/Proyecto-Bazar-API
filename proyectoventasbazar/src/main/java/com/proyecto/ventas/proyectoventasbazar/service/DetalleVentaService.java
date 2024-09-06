@@ -16,10 +16,6 @@ public class DetalleVentaService implements IDetalleVentaService{
     @Autowired
     IDetalleVentaRepository detalleRepo;
 
-    @Autowired
-    IProductoRepository producRepo;
-
-
     @Override
     public List<DetalleVenta> getDetalles() {
         return detalleRepo.findAll();
@@ -27,26 +23,13 @@ public class DetalleVentaService implements IDetalleVentaService{
 
     @Override
     public DetalleVenta findDetalle(Long id) {
-        return detalleRepo.findById(id).orElse(null);
+        return detalleRepo.findById(id).orElseThrow(()-> new RuntimeException("Detalle no encontrado"));
     }
 
 
     @Override
-
-    //EN ESTA FUNCION QUISE ACTUALIZAR EL STOCK
     public void saveDetalle(DetalleVenta detalle) {
 
-        Producto producto = producRepo.findById(detalle.getProducto().getCodigo_producto())
-                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
-
-        if (producto.getStock() < detalle.getCantidad()) {
-            throw new IllegalArgumentException("Stock insuficiente para el producto");
-        }
-
-
-
-        producto.setStock(producto.getStock() - detalle.getCantidad());
-        producRepo.save(producto);
         detalleRepo.save(detalle);
     }
 
@@ -57,7 +40,11 @@ public class DetalleVentaService implements IDetalleVentaService{
     }
 
     @Override
-    public void editDetalle(DetalleVenta detalle) {
-        detalleRepo.save(detalle);
+    public void editDetalle(Long id_detalle,DetalleVenta detalle) {
+        DetalleVenta detalleEditar = this.findDetalle(id_detalle);
+        detalle.setCantidad(detalleEditar.getCantidad());
+        detalle.setProducto(detalleEditar.getProducto());
+        detalle.setVenta(detalleEditar.getVenta());
+        detalleRepo.save(detalleEditar);
     }
 }

@@ -21,7 +21,7 @@ public class ProductoService implements IProductoService {
 
     @Override
     public Producto findProducto(Long id) {
-        return producRepo.findById(id).orElse(null);
+        return producRepo.findById(id).orElseThrow(()->new RuntimeException("Producto no encontrado"));
     }
 
     @Override
@@ -35,8 +35,13 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public void editProducto(Producto producto) {
-       producRepo.save(producto);
+    public void editProducto(Long codigo_producto,Producto producto) {
+        Producto productoEditar = this.findProducto(codigo_producto);
+        productoEditar.setNombre(producto.getNombre());
+        productoEditar.setCosto(producto.getCosto());
+        productoEditar.setMarca(producto.getMarca());
+        productoEditar.setStock(producto.getStock());
+        producRepo.save(productoEditar);
     }
 
     @Override

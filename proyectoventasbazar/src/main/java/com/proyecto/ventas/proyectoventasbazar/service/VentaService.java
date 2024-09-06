@@ -40,28 +40,35 @@ public class VentaService implements IVentaService  {
 
     @Override
     public Venta findVenta(Long id) {
-        return ventaRepo.findById(id).orElse(null);
+        return ventaRepo.findById(id).orElseThrow(()->new RuntimeException("Venta no encontrada"));
     }
 
     @Override
-    public void saveVenta(VentaDTO venta) {
-        Venta venta1 = new Venta();
-        Cliente cliente = clienteRepo.findById(venta.getId_cliente()).orElse(null);
-        venta1.setFecha_venta(venta.getFecha());
-        venta1.setCliente(cliente);
+    public void saveVenta(VentaDTO ventaDTO) {
+        Venta venta = new Venta();
+        Cliente cliente = clienteRepo.findById(ventaDTO.getId_cliente()).orElseThrow(()->new RuntimeException("Cliente no encontrado"));
+        venta.setFecha_venta(ventaDTO.getFecha());
+        venta.setCliente(cliente);
 
-        for(DetalleDTO detalleDTO : venta.getDetalles()){
+        for(DetalleDTO detalleDTO : ventaDTO.getDetalles()){
 
-            Producto producto = producRepo.findById(detalleDTO.getCodigo_producto()).orElse(null);
-            DetalleVenta detalle = new DetalleVenta(producto,detalleDTO.getCantidad());
-            venta1.agregarDetalle(detalle);
+            Producto producto = producRepo.findById(detalleDTO.getCodigo_producto()).orElseThrow(
+                    ()->new RuntimeException("Producto no encontrado"));
+            if(detalleDTO.getCantidad()<=producto.getStock()){
+                DetalleVenta detalle = new DetalleVenta(producto,detalleDTO.getCantidad());
+                venta.agregarDetalle(detalle);
+                producto.setStock(producto.getStock() - detalleDTO.getCantidad());
+                producRepo.save(producto);
+
+            }
+            else{
+                throw new RuntimeException("Stock insuficiente del producto: " + producto.getNombre());
+            }
 
 
 
         }
-        ventaRepo.save(venta1);
-
-
+        ventaRepo.save(venta);
     }
 
     @Override
@@ -70,16 +77,17 @@ public class VentaService implements IVentaService  {
     }
 
     @Override
-    public void editVenta(Venta venta) {
-        venta.setFecha_venta(venta.getFecha_venta());
-        venta.setTotal(venta.getTotal());
-        venta.setCliente(venta.getCliente());
-        ventaRepo.save(venta);
+    public void editVenta(Long codigo_venta,Venta venta) {
+        Venta ventaEditar = this.findVenta(codigo_venta);
+        ventaEditar.setFecha_venta(venta.getFecha_venta());
+        ventaEditar.setTotal(venta.getTotal());
+        ventaEditar.setCliente(venta.getCliente());
+        ventaRepo.save(ventaEditar);
     }
 
     @Override
     public List<Producto> getProductosVenta(Long id) {
-        Venta ventaBuscar = ventaRepo.findById(id).orElse(null);
+        Venta ventaBuscar = this.findVenta(id);
         List<Producto> productos = new ArrayList<>();
         for (DetalleVenta detalle : ventaBuscar.getDetalles() ){
              productos.add(detalle.getProducto());

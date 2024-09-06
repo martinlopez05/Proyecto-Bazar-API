@@ -21,7 +21,7 @@ public class ClienteService implements IClienteService {
 
     @Override
     public Cliente findCliente(Long id) {
-        return clienteRepo.findById(id).orElse(null);
+        return clienteRepo.findById(id).orElseThrow(()->new RuntimeException("Cliente no encontrado"));
     }
 
     @Override
@@ -35,7 +35,12 @@ public class ClienteService implements IClienteService {
     }
 
     @Override
-    public void editCliente(Cliente cliente) {
-       clienteRepo.save(cliente);
+    public void editCliente(Long id_cliente,Cliente cliente) {
+        Cliente clienteEditar = this.findCliente(id_cliente);
+        clienteEditar.setNombre(cliente.getNombre());
+        clienteEditar.setApellido(cliente.getApellido());
+        clienteEditar.setVentas(cliente.getVentas());
+        clienteEditar.setDni(cliente.getDni());
+        clienteRepo.save(clienteEditar);
     }
 }
