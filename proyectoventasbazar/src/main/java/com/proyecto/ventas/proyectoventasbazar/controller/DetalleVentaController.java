@@ -25,11 +25,6 @@ public class DetalleVentaController {
         return detalleServ.findDetalle(id_detalle);
     }
 
-    @PostMapping("/detalles/crear")
-    public String crearDetalleVenta(@RequestBody DetalleVenta detalle){
-        detalleServ.saveDetalle(detalle);
-        return "Detalle creado correctamente";
-    }
 
     @DeleteMapping("/detalles/eliminar/{id_detalle}")
     public String eliminarDetalleVenta(@PathVariable Long id_detalle){

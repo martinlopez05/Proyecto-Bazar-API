@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,24 +23,40 @@ public class Venta {
     private Double total;
 
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_cliente")
-    @JsonBackReference
     private Cliente cliente;
 
 
-    @OneToMany(mappedBy = "venta")
-    @JsonManagedReference
-    private List<DetalleVenta> detalles;
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL ,orphanRemoval = true)
+    private List<DetalleVenta> detalles = new ArrayList<>();
 
     public Venta() {
     }
 
-    public Venta(Long codigo_venta, LocalDate fecha_venta, Double total, Cliente cliente, List<DetalleVenta> detalles) {
+    public Venta(Long codigo_venta, LocalDate fecha_venta,Cliente cliente) {
         this.codigo_venta = codigo_venta;
         this.fecha_venta = fecha_venta;
-        this.total = total;
         this.cliente = cliente;
-        this.detalles = detalles;
+        this.detalles = new ArrayList<>();
+        this.total= calcularTotal();
     }
+
+    public double calcularTotal(){
+
+        double totalVenta = 0;
+
+        for (DetalleVenta detalle : detalles){
+               totalVenta+=detalle.getPrecio();
+        }
+
+        return totalVenta;
+    }
+
+    public void agregarDetalle(DetalleVenta detalle){
+        detalle.setVenta(this);
+        detalles.add(detalle);
+    }
+
+
 }

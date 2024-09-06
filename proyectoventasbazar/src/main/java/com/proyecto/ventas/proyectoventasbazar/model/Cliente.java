@@ -1,6 +1,7 @@
 package com.proyecto.ventas.proyectoventasbazar.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,8 +26,8 @@ public class Cliente {
 
 
     @OneToMany(mappedBy = "cliente")
-    @JsonManagedReference
     private List<Venta> ventas;
+
 
     public Cliente(Long id_cliente) {
         this.id_cliente = id_cliente;

@@ -1,5 +1,6 @@
 package com.proyecto.ventas.proyectoventasbazar.controller;
 
+import com.proyecto.ventas.proyectoventasbazar.dto.VentaDTO;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 import com.proyecto.ventas.proyectoventasbazar.model.Venta;
 import com.proyecto.ventas.proyectoventasbazar.service.IVentaService;
@@ -35,8 +36,15 @@ public class VentaController {
         return ventaServ.getMontoyCantidad(fecha_venta);
     }
 
+    @GetMapping("/ventas/{id_cliente}")
+    public List<Venta> traerVentasPorCliente(@PathVariable Long id_cliente){
+        return ventaServ.getVentasPorCliente(id_cliente);
+    }
+
+
+
     @PostMapping("/ventas/crear")
-    public String crearventa(@RequestBody Venta venta){
+    public String crearventa(@RequestBody VentaDTO venta){
         ventaServ.saveVenta(venta);
         return "Venta creada correctamente";
     }

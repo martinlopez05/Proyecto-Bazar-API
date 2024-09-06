@@ -1,5 +1,6 @@
 package com.proyecto.ventas.proyectoventasbazar.service;
 
+import com.proyecto.ventas.proyectoventasbazar.dto.VentaDTO;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 import com.proyecto.ventas.proyectoventasbazar.model.Venta;
 
@@ -11,9 +12,10 @@ public interface IVentaService {
 
     public List<Venta> getVentas();
     public Venta findVenta(Long id);
-    public void saveVenta(Venta venta);
+    public void saveVenta(VentaDTO ventaDTO);
     public void deleteVenta(Long id);
     public void editVenta(Venta venta);
     public List<Producto> getProductosVenta(Long id);
     public String getMontoyCantidad(LocalDate fecha);
+    public List<Venta> getVentasPorCliente(Long id_cliente);
 }
