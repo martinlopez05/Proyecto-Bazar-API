@@ -8,10 +8,10 @@ import java.util.List;
 public interface IClienteService {
 
     public List<Cliente> getClientes();
-    public Cliente findCliente(Long id);
+    public Cliente findCliente(Long idCliente);
     public void saveCliente(Cliente cliente);
-    public void deleteCliente(Long id);
-    public void editCliente(Long id_cliente,Cliente cliente);
+    public void deleteCliente(Long idCliente);
+    public void editCliente(Long idCliente,Cliente cliente);
 
 
 }

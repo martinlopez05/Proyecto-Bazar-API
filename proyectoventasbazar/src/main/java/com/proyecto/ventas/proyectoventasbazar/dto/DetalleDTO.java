@@ -7,11 +7,11 @@ import lombok.Setter;
 @Setter
 public class DetalleDTO {
 
-    private Long codigo_producto;
+    private Long codigoProducto;
     private int cantidad;
 
-    public DetalleDTO(Long codigo_producto, int cantidad) {
-        this.codigo_producto = codigo_producto;
+    public DetalleDTO(Long codigoProducto, int cantidad) {
+        this.codigoProducto = codigoProducto;
         this.cantidad = cantidad;
     }
 

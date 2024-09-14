@@ -39,20 +39,20 @@ public class VentaService implements IVentaService  {
     }
 
     @Override
-    public Venta findVenta(Long id) {
-        return ventaRepo.findById(id).orElseThrow(()->new RuntimeException("Venta no encontrada"));
+    public Venta findVenta(Long codigoVenta) {
+        return ventaRepo.findById(codigoVenta).orElseThrow(()->new RuntimeException("Venta no encontrada"));
     }
 
     @Override
-    public void saveVenta(VentaDTO ventaDTO) {
+    public void saveVenta(VentaDTO ventadto) {
         Venta venta = new Venta();
-        Cliente cliente = clienteRepo.findById(ventaDTO.getId_cliente()).orElseThrow(()->new RuntimeException("Cliente no encontrado"));
-        venta.setFecha_venta(ventaDTO.getFecha());
+        Cliente cliente = clienteRepo.findById(ventadto.getIdCliente()).orElseThrow(()->new RuntimeException("Cliente no encontrado"));
+        venta.setFechaVenta(ventadto.getFecha());
         venta.setCliente(cliente);
 
-        for(DetalleDTO detalleDTO : ventaDTO.getDetalles()){
+        for(DetalleDTO detalleDTO : ventadto.getDetalles()){
 
-            Producto producto = producRepo.findById(detalleDTO.getCodigo_producto()).orElseThrow(
+            Producto producto = producRepo.findById(detalleDTO.getCodigoProducto()).orElseThrow(
                     ()->new RuntimeException("Producto no encontrado"));
             if(detalleDTO.getCantidad()<=producto.getStock()){
                 DetalleVenta detalle = new DetalleVenta(producto,detalleDTO.getCantidad());
@@ -72,22 +72,42 @@ public class VentaService implements IVentaService  {
     }
 
     @Override
-    public void deleteVenta(Long id) {
-       ventaRepo.deleteById(id);
+    public void deleteVenta(Long codigoVenta) {
+       ventaRepo.deleteById(codigoVenta);
     }
 
     @Override
-    public void editVenta(Long codigo_venta,Venta venta) {
-        Venta ventaEditar = this.findVenta(codigo_venta);
-        ventaEditar.setFecha_venta(venta.getFecha_venta());
-        ventaEditar.setTotal(venta.getTotal());
-        ventaEditar.setCliente(venta.getCliente());
+    public void editVenta(Long codigoVenta,VentaDTO ventadto) {
+        Venta ventaEditar = this.findVenta(codigoVenta);
+        Cliente cliente = clienteRepo.findById(ventadto.getIdCliente()).orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+        ventaEditar.setFechaVenta(ventadto.getFecha());
+        ventaEditar.setCliente(cliente);
+
+        for (DetalleDTO detalleDTO : ventadto.getDetalles()) {
+
+            Producto producto = producRepo.findById(detalleDTO.getCodigoProducto()).orElseThrow(
+                    () -> new RuntimeException("Producto no encontrado"));
+            if (detalleDTO.getCantidad() <= producto.getStock()) {
+                DetalleVenta detalle = new DetalleVenta(producto, detalleDTO.getCantidad());
+                ventaEditar.agregarDetalle(detalle);
+                producto.setStock(producto.getStock() - detalleDTO.getCantidad());
+                producRepo.save(producto);
+
+            } else {
+                throw new RuntimeException("Stock insuficiente del producto: " + producto.getNombre());
+            }
+
+
+        }
         ventaRepo.save(ventaEditar);
     }
 
+
+
+
     @Override
-    public List<Producto> getProductosVenta(Long id) {
-        Venta ventaBuscar = this.findVenta(id);
+    public List<Producto> getProductosVenta(Long codigoVenta) {
+        Venta ventaBuscar = this.findVenta(codigoVenta);
         List<Producto> productos = new ArrayList<>();
         for (DetalleVenta detalle : ventaBuscar.getDetalles() ){
              productos.add(detalle.getProducto());
@@ -97,26 +117,13 @@ public class VentaService implements IVentaService  {
     }
 
 
-    @Override
-    public String getMontoyCantidad(LocalDate fecha) {
-        Double monto_total=0.0;
-        int cant_ventas = 0;
-        for (Venta venta : ventaRepo.findAll()){
-            if(venta.getFecha_venta().equals(fecha)){
-                monto_total+=venta.getTotal();
-                cant_ventas+=1;
-            }
-        }
 
-        return "El monto total de las ventas de la fecha: " + fecha + "es : " + monto_total +
-                "\n La cantidad de ventas de la fecha fue :" + cant_ventas;
-    }
 
     @Override
-    public List<Venta> getVentasPorCliente(Long id_cliente) {
+    public List<Venta> getVentasPorCliente(Long idCliente) {
         List<Venta> ventasCliente = new ArrayList<>();
         for(Venta venta : ventaRepo.findAll()){
-            if(venta.getCliente().getId_cliente().equals(id_cliente)){
+            if(venta.getCliente().getIdCliente().equals(idCliente)){
                 ventasCliente.add(venta);
             }
         }
@@ -129,7 +136,7 @@ public class VentaService implements IVentaService  {
     public List<Venta> getVentasPorFechas(LocalDate fecha){
         List<Venta> ventas = new ArrayList<>();
         for(Venta venta : ventaRepo.findAll()){
-            if(venta.getFecha_venta().equals(fecha)){
+            if(venta.getFechaVenta().equals(fecha)){
                 ventas.add(venta);
             }
         }

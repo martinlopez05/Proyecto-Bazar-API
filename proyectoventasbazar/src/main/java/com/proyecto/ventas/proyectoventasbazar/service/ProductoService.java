@@ -20,8 +20,8 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public Producto findProducto(Long id) {
-        return producRepo.findById(id).orElseThrow(()->new RuntimeException("Producto no encontrado"));
+    public Producto findProducto(Long codigoProducto) {
+        return producRepo.findById(codigoProducto).orElseThrow(()->new RuntimeException("Producto no encontrado"));
     }
 
     @Override
@@ -30,19 +30,20 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public void deleteProducto(Long id) {
-        producRepo.deleteById(id);
+    public void deleteProducto(Long codigoProducto) {
+        producRepo.deleteById(codigoProducto);
     }
 
     @Override
-    public void editProducto(Long codigo_producto,Producto producto) {
-        Producto productoEditar = this.findProducto(codigo_producto);
+    public void editProducto(Long codigoProducto,Producto producto) {
+        Producto productoEditar = this.findProducto(codigoProducto);
         productoEditar.setNombre(producto.getNombre());
         productoEditar.setCosto(producto.getCosto());
         productoEditar.setMarca(producto.getMarca());
         productoEditar.setStock(producto.getStock());
         producRepo.save(productoEditar);
     }
+
 
     @Override
     public List<Producto> getStockMen5(){

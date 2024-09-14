@@ -9,15 +9,15 @@ import java.util.List;
 @Getter
 @Setter
 public class VentaDTO {
-       private Long id_cliente;
+       private Long idCliente;
        private List<DetalleDTO> detalles;
        private LocalDate fecha;
 
        public VentaDTO() {
        }
 
-       public VentaDTO(Long id_cliente, List<DetalleDTO> detalles, LocalDate fecha) {
-              this.id_cliente = id_cliente;
+       public VentaDTO(Long idCliente, List<DetalleDTO> detalles, LocalDate fecha) {
+              this.idCliente = idCliente;
               this.detalles = detalles;
               this.fecha = fecha;
        }

@@ -21,24 +21,21 @@ public class VentaController {
         return ventaServ.getVentas();
     }
 
-    @GetMapping("/ventas/{codigo_venta}")
-    public Venta traerVenta(@PathVariable Long codigo_venta){
-        return ventaServ.findVenta(codigo_venta);
+    @GetMapping("/ventas/{codigoVenta}")
+    public Venta traerVenta(@PathVariable Long codigoVenta){
+        return ventaServ.findVenta(codigoVenta);
     }
 
-    @GetMapping("/ventas/productos/{codigo_venta}")
-    public List<Producto> traerProductosVenta(@PathVariable Long codigo_venta){
-        return ventaServ.getProductosVenta(codigo_venta);
+    @GetMapping("/ventas/productos/{codigoVenta}")
+    public List<Producto> traerProductosVenta(@PathVariable Long codigoVenta){
+        return ventaServ.getProductosVenta(codigoVenta);
     }
 
-    @GetMapping("/ventas/{fecha_venta}")
-    public String traerMontoyCantporFecha(@PathVariable LocalDate fecha_venta){
-        return ventaServ.getMontoyCantidad(fecha_venta);
-    }
 
-    @GetMapping("/ventas/{id_cliente}")
-    public List<Venta> traerVentasPorCliente(@PathVariable Long id_cliente){
-        return ventaServ.getVentasPorCliente(id_cliente);
+
+    @GetMapping("/ventas/cliente/{idCliente}")
+    public List<Venta> traerVentasPorCliente(@PathVariable Long idCliente){
+        return ventaServ.getVentasPorCliente(idCliente);
     }
 
 
@@ -49,17 +46,17 @@ public class VentaController {
         return "Venta creada correctamente";
     }
 
-    @DeleteMapping("/ventas/eliminar/{codigo_venta}")
-    public String eliminarVenta(@PathVariable Long codigo_venta){
-        ventaServ.deleteVenta(codigo_venta);
+    @DeleteMapping("/ventas/eliminar/{codigoVenta}")
+    public String eliminarVenta(@PathVariable Long codigoVenta){
+        ventaServ.deleteVenta(codigoVenta);
         return "Venta eliminada correctamente";
     }
 
 
-    @PutMapping("/ventas/editar/{codigo_venta}")
-    public Venta editarVenta(@PathVariable Long codigo_venta,@RequestBody Venta venta){
-        ventaServ.editVenta(codigo_venta,venta);
-        return ventaServ.findVenta(codigo_venta);
+    @PutMapping("/ventas/editar/{codigoVenta}")
+    public Venta editarVenta(@PathVariable Long codigoVenta,@RequestBody VentaDTO ventadto){
+        ventaServ.editVenta(codigoVenta,ventadto);
+        return ventaServ.findVenta(codigoVenta);
     }
 
 

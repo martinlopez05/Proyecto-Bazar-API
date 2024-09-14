@@ -8,10 +8,10 @@ public interface IProductoService {
 
 
     public List<Producto> getProductos();
-    public Producto findProducto(Long id);
+    public Producto findProducto(Long codigoProducto);
     public void saveProducto(Producto producto);
-    public void deleteProducto(Long id);
-    public void editProducto(Long codigo_producto,Producto producto);
+    public void deleteProducto(Long codigoProducto);
+    public void editProducto(Long codigoProducto,Producto producto);
     public List<Producto> getStockMen5();
 
 }

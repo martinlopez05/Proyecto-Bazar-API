@@ -1,6 +1,7 @@
 package com.proyecto.ventas.proyectoventasbazar.controller;
 
 
+import com.proyecto.ventas.proyectoventasbazar.dto.DetalleDTO;
 import com.proyecto.ventas.proyectoventasbazar.model.DetalleVenta;
 import com.proyecto.ventas.proyectoventasbazar.service.DetalleVentaService;
 import com.proyecto.ventas.proyectoventasbazar.service.IDetalleVentaService;
@@ -20,23 +21,23 @@ public class DetalleVentaController {
         return detalleServ.getDetalles();
     }
 
-    @GetMapping("/detalles/{id_detalle}")
-    public DetalleVenta traerDetalleVenta(@PathVariable Long id_detalle){
-        return detalleServ.findDetalle(id_detalle);
+    @GetMapping("/detalles/{idDetalle}")
+    public DetalleVenta traerDetalleVenta(@PathVariable Long idDetalle){
+        return detalleServ.findDetalle(idDetalle);
     }
 
 
-    @DeleteMapping("/detalles/eliminar/{id_detalle}")
-    public String eliminarDetalleVenta(@PathVariable Long id_detalle){
-        detalleServ.deleteDetalle(id_detalle);
+    @DeleteMapping("/detalles/eliminar/{idDetalle}")
+    public String eliminarDetalleVenta(@PathVariable Long idDetalle){
+        detalleServ.deleteDetalle(idDetalle);
         return "Detalle eliminado correctamente";
     }
 
-    //FALTAN MODIFICAR TODAS LAS FUNCIONES DE SERVICE DE EDITAR Y ADEMAS DTOS
-    @PutMapping("/detalles/editar/{id_detalle}")
-    public DetalleVenta editarDetalleVenta(@PathVariable Long id_detalle, @RequestBody DetalleVenta detalle){
-        detalleServ.editDetalle(id_detalle,detalle);
-        return detalleServ.findDetalle(id_detalle);
+
+    @PutMapping("/detalles/editar/{idDetalle}")
+    public DetalleVenta editarDetalleVenta(@PathVariable Long idDetalle, @RequestBody DetalleDTO detalledto){
+        detalleServ.editDetalle(idDetalle,detalledto);
+        return detalleServ.findDetalle(idDetalle);
     }
 
 }

@@ -11,11 +11,10 @@ import java.util.Locale;
 public interface IVentaService {
 
     public List<Venta> getVentas();
-    public Venta findVenta(Long id);
+    public Venta findVenta(Long CodigoVenta);
     public void saveVenta(VentaDTO ventaDTO);
-    public void deleteVenta(Long id);
-    public void editVenta(Long codigo_venta,Venta venta);
-    public List<Producto> getProductosVenta(Long id);
-    public String getMontoyCantidad(LocalDate fecha);
-    public List<Venta> getVentasPorCliente(Long id_cliente);
+    public void deleteVenta(Long codigoVenta);
+    public void editVenta(Long codigoVenta,VentaDTO ventadto);
+    public List<Producto> getProductosVenta(Long codigoVenta);
+    public List<Venta> getVentasPorCliente(Long idCliente);
 }

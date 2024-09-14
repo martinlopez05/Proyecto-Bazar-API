@@ -3,6 +3,7 @@ package com.proyecto.ventas.proyectoventasbazar.controller;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 import com.proyecto.ventas.proyectoventasbazar.service.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +18,9 @@ public class ProductoController {
         return producServ.getProductos();
     }
 
-    @GetMapping("/productos/{codigo_producto}")
-    public Producto traerProducto(@PathVariable Long codigo_producto){
-        return producServ.findProducto(codigo_producto);
+    @GetMapping("/productos/{codigoProducto}")
+    public Producto traerProducto(@PathVariable Long codigoProducto){
+        return producServ.findProducto(codigoProducto);
     }
 
     @GetMapping("productos/falta_stock")
@@ -27,22 +28,22 @@ public class ProductoController {
         return producServ.getStockMen5();
     }
 
-    @PostMapping("/productos/crear")
+    @PostMapping("productos/crear")
     public String crearProducto(@RequestBody Producto producto){
         producServ.saveProducto(producto);
         return "Producto creado correctamente";
     }
 
-    @DeleteMapping("/productos/eliminar/{codigo_producto}")
-    public String eliminarProducto(@PathVariable Long codigo_producto){
-        producServ.deleteProducto(codigo_producto);
+    @DeleteMapping("/productos/eliminar/{codigoProducto}")
+    public String eliminarProducto(@PathVariable Long codigoProducto){
+        producServ.deleteProducto(codigoProducto);
         return "Producto Eliminado correctamente";
     }
 
-    @PutMapping("/productos/editar/{codigo_producto}")
-    public Producto editarProducto(@PathVariable Long codigo_producto,@RequestBody Producto producto){
-           producServ.editProducto(codigo_producto,producto);
-           return producServ.findProducto(codigo_producto);
+    @PutMapping("/productos/editar/{codigoProducto}")
+    public Producto editarProducto(@PathVariable Long codigoProducto,@RequestBody Producto producto){
+           producServ.editProducto(codigoProducto,producto);
+           return producServ.findProducto(codigoProducto);
 
     }
 }
