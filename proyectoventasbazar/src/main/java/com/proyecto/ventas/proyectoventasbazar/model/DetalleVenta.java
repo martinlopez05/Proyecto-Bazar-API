@@ -22,12 +22,12 @@ public class DetalleVenta {
 
     @ManyToOne(optional = false)
     @JoinColumn(name="id_producto")
-    @JsonBackReference("producto-detalle")
+    //@JsonBackReference("producto-detalle")
     private Producto producto;
 
     @ManyToOne
     @JoinColumn(name="id_venta")
-    @JsonBackReference("venta-detalle")
+    //@JsonBackReference("venta-detalle")
     private Venta venta;
 
     private int cantidad;

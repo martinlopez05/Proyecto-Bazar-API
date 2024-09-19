@@ -29,7 +29,7 @@ public class Producto {
        private double stock;
 
        @OneToMany(mappedBy = "producto")
-       @JsonManagedReference("producto-detalle")
+       //@JsonManagedReference("producto-detalle")
        private List<DetalleVenta> detallesProduc;
 
 

@@ -30,7 +30,7 @@ public class Cliente {
 
 
     @OneToMany(mappedBy = "cliente")
-    @JsonManagedReference("cliente-venta")
+    //@JsonManagedReference("cliente-venta")
     private List<Venta> ventas;
 
 

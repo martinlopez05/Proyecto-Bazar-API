@@ -29,12 +29,12 @@ public class Venta {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_cliente")
-    @JsonBackReference("cliente-venta")
+    //@JsonBackReference("cliente-venta")
     private Cliente cliente;
 
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL ,orphanRemoval = true)
-    @JsonManagedReference("venta-detalle")
+    //@JsonManagedReference("venta-detalle")
     private List<DetalleVenta> detalles = new ArrayList<>();
 
     public Venta() {
