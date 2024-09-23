@@ -10,20 +10,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 public class DetalleVentaController {
 
     @Autowired
     IDetalleVentaService detalleServ;
 
+
     @GetMapping("/detalles")
-    public List<DetalleVenta> traerDetallesVentas(){
+    public List<DetalleDTO> traerDetallesVentas(){
         return detalleServ.getDetalles();
     }
 
     @GetMapping("/detalles/{idDetalle}")
-    public DetalleVenta traerDetalleVenta(@PathVariable Long idDetalle){
-        return detalleServ.findDetalle(idDetalle);
+    public DetalleDTO traerDetalleVenta(@PathVariable Long idDetalle){
+        return detalleServ.getDetalleDTO(idDetalle);
     }
 
 

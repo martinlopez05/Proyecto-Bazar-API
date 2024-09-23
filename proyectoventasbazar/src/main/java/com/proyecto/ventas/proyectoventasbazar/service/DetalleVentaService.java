@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,13 +22,25 @@ public class DetalleVentaService implements IDetalleVentaService{
     IProductoRepository producRepo;
 
     @Override
-    public List<DetalleVenta> getDetalles() {
-        return detalleRepo.findAll();
+    public List<DetalleDTO> getDetalles() {
+        List<DetalleDTO> detalles = new ArrayList<>();
+        for(DetalleVenta detalle : detalleRepo.findAll()){
+            DetalleDTO detalleDTO = new DetalleDTO(detalle.getIdDetalle(),detalle.getProducto().getCodigoProducto(),detalle.getCantidad(),detalle.getPrecio());
+            detalles.add(detalleDTO);
+        }
+        return detalles;
     }
 
     @Override
     public DetalleVenta findDetalle(Long idDetalle) {
         return detalleRepo.findById(idDetalle).orElseThrow(()-> new RuntimeException("Detalle no encontrado"));
+    }
+
+    @Override
+    public DetalleDTO getDetalleDTO(Long idDetalle) {
+        DetalleVenta detalleBuscar = findDetalle(idDetalle);
+        DetalleDTO detalleDTO = new DetalleDTO(detalleBuscar.getIdDetalle(),detalleBuscar.getProducto().getCodigoProducto(),detalleBuscar.getCantidad(),detalleBuscar.getPrecio());
+        return detalleDTO;
     }
 
 

@@ -13,21 +13,19 @@ import lombok.Setter;
 @Setter
 @Entity
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idDetalle")
+
 public class DetalleVenta {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idDetalle;
 
     @ManyToOne(optional = false)
     @JoinColumn(name="id_producto")
-    //@JsonBackReference("producto-detalle")
     private Producto producto;
 
     @ManyToOne
     @JoinColumn(name="id_venta")
-    //@JsonBackReference("venta-detalle")
     private Venta venta;
 
     private int cantidad;

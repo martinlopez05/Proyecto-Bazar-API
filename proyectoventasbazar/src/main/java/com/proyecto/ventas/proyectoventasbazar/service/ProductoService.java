@@ -1,5 +1,7 @@
 package com.proyecto.ventas.proyectoventasbazar.service;
 
+import com.proyecto.ventas.proyectoventasbazar.dto.DetalleDTO;
+import com.proyecto.ventas.proyectoventasbazar.model.DetalleVenta;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 import com.proyecto.ventas.proyectoventasbazar.repository.IProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,20 @@ public class ProductoService implements IProductoService {
         }
 
         return prodStockMen5;
+    }
+
+    @Override
+    public List<DetalleDTO> getDetallesporProducto(Long codigoProducto) {
+        Producto producto = this.findProducto(codigoProducto);
+        List<DetalleDTO> detalles = new ArrayList<>();
+        for (DetalleVenta detalle : producto.getDetallesProduc()){
+            DetalleDTO detalleDTO = new DetalleDTO(detalle.getIdDetalle(),detalle.getProducto().getCodigoProducto(),detalle.getCantidad()
+            ,detalle.getPrecio());
+            detalles.add(detalleDTO);
+
+        }
+
+        return detalles;
     }
 
 

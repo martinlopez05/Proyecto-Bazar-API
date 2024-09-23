@@ -1,10 +1,7 @@
 package com.proyecto.ventas.proyectoventasbazar.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,11 +13,11 @@ import java.util.List;
 @Setter
 @Entity
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idCliente")
+
 public class Cliente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idCliente;
 
 
@@ -30,7 +27,7 @@ public class Cliente {
 
 
     @OneToMany(mappedBy = "cliente")
-    //@JsonManagedReference("cliente-venta")
+    @JsonIgnore
     private List<Venta> ventas;
 
 

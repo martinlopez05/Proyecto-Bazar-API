@@ -17,13 +17,13 @@ public class VentaController {
     IVentaService ventaServ;
 
     @GetMapping("/ventas")
-    public List <Venta> traerClientes(){
+    public List <VentaDTO> traerVentas(){
         return ventaServ.getVentas();
     }
 
     @GetMapping("/ventas/{codigoVenta}")
-    public Venta traerVenta(@PathVariable Long codigoVenta){
-        return ventaServ.findVenta(codigoVenta);
+    public VentaDTO traerVenta(@PathVariable Long codigoVenta){
+        return ventaServ.getVentaDTO(codigoVenta);
     }
 
     @GetMapping("/ventas/productos/{codigoVenta}")
@@ -34,7 +34,7 @@ public class VentaController {
 
 
     @GetMapping("/ventas/cliente/{idCliente}")
-    public List<Venta> traerVentasPorCliente(@PathVariable Long idCliente){
+    public List<VentaDTO> traerVentasPorCliente(@PathVariable Long idCliente){
         return ventaServ.getVentasPorCliente(idCliente);
     }
 
@@ -54,9 +54,9 @@ public class VentaController {
 
 
     @PutMapping("/ventas/editar/{codigoVenta}")
-    public Venta editarVenta(@PathVariable Long codigoVenta,@RequestBody VentaDTO ventadto){
+    public VentaDTO editarVenta(@PathVariable Long codigoVenta,@RequestBody VentaDTO ventadto){
         ventaServ.editVenta(codigoVenta,ventadto);
-        return ventaServ.findVenta(codigoVenta);
+        return ventaServ.getVentaDTO(codigoVenta);
     }
 
 

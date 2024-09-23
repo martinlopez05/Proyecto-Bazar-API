@@ -1,5 +1,6 @@
 package com.proyecto.ventas.proyectoventasbazar.service;
 
+import com.proyecto.ventas.proyectoventasbazar.dto.DetalleDTO;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 
 import java.util.List;
@@ -13,5 +14,6 @@ public interface IProductoService {
     public void deleteProducto(Long codigoProducto);
     public void editProducto(Long codigoProducto,Producto producto);
     public List<Producto> getStockMen5();
+    public List<DetalleDTO> getDetallesporProducto(Long codidgoProducto);
 
 }

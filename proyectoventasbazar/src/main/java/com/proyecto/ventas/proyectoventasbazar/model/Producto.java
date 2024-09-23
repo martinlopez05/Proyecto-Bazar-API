@@ -2,10 +2,7 @@ package com.proyecto.ventas.proyectoventasbazar.model;
 
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +18,7 @@ import java.util.List;
 public class Producto {
 
        @Id
-       @GeneratedValue(strategy = GenerationType.AUTO)
+       @GeneratedValue(strategy = GenerationType.SEQUENCE)
        private Long codigoProducto;
        private String nombre;
        private String marca;
@@ -29,7 +26,7 @@ public class Producto {
        private double stock;
 
        @OneToMany(mappedBy = "producto")
-       //@JsonManagedReference("producto-detalle")
+       @JsonIgnore
        private List<DetalleVenta> detallesProduc;
 
 

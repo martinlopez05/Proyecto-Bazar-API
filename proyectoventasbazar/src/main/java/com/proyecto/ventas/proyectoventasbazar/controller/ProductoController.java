@@ -1,5 +1,6 @@
 package com.proyecto.ventas.proyectoventasbazar.controller;
 
+import com.proyecto.ventas.proyectoventasbazar.dto.DetalleDTO;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 import com.proyecto.ventas.proyectoventasbazar.service.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,11 @@ public class ProductoController {
     @GetMapping("productos/falta_stock")
     public List<Producto> traerProdStockMen5(){
         return producServ.getStockMen5();
+    }
+
+    @GetMapping("/productos/detalles/{codigoProducto}")
+    public List<DetalleDTO> traerDetallesporProducto( @PathVariable  Long codigoProducto){
+        return producServ.getDetallesporProducto(codigoProducto);
     }
 
     @PostMapping("productos/crear")
