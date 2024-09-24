@@ -25,7 +25,7 @@ public class Producto {
        private double costo;
        private double stock;
 
-       @OneToMany(mappedBy = "producto")
+       @OneToMany(mappedBy = "producto",cascade = CascadeType.ALL ,orphanRemoval = true)
        @JsonIgnore
        private List<DetalleVenta> detallesProduc;
 

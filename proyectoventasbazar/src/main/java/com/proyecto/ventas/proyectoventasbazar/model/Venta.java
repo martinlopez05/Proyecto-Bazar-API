@@ -45,17 +45,16 @@ public class Venta {
 
 
 
-    @PrePersist
-    @PreUpdate
     public void calcularTotal() {
         double totalVenta = 0;
 
         for (DetalleVenta detalle : detalles) {
-            totalVenta += detalle.getPrecio() * detalle.getCantidad();
+            totalVenta += detalle.getPrecio();
         }
 
         this.total = totalVenta;
     }
+
 
     public void agregarDetalle(DetalleVenta detalle){
         detalle.setVenta(this);
