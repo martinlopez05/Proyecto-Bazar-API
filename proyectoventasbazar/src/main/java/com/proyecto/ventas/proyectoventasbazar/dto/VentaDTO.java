@@ -1,6 +1,8 @@
 package com.proyecto.ventas.proyectoventasbazar.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,11 +13,17 @@ import java.util.List;
 @Setter
 public class VentaDTO {
        private Long codigoVenta;
+       
+       @NotNull( message = "El campo idCliente no puede estar vacío")
        private Long idCliente;
+       
+       @NotNull( message = " la lista detalles no puede estar vacía")
        private List<DetalleDTO> detalles;
 
+       
        private LocalDate fecha;
 
+       
        private Double total;
 
        public VentaDTO() {

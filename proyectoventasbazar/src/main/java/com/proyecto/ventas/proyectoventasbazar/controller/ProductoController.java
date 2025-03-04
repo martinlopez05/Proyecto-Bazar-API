@@ -3,6 +3,7 @@ package com.proyecto.ventas.proyectoventasbazar.controller;
 import com.proyecto.ventas.proyectoventasbazar.dto.DetalleDTO;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 import com.proyecto.ventas.proyectoventasbazar.service.IProductoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class ProductoController {
     }
 
     @PostMapping("productos/crear")
-    public String crearProducto(@RequestBody Producto producto){
+    public String crearProducto(@Valid @RequestBody Producto producto){
         producServ.saveProducto(producto);
         return "Producto creado correctamente";
     }

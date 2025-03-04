@@ -3,6 +3,8 @@ package com.proyecto.ventas.proyectoventasbazar.model;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,9 +22,13 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idCliente;
 
-
+    @NotBlank( message = "El nombre no puede estar en blanco")
     private String nombre;
+    
+    @NotBlank(message = "El apellido no puede estar en blanco")
     private String apellido;
+    
+    @NotBlank( message = "El dni no puede estar en blanco")
     private String dni;
 
 
@@ -30,7 +36,7 @@ public class Cliente {
     @JsonIgnore
     private List<Venta> ventas;
 
-
+    
     public Cliente(Long idCliente) {
         this.idCliente = idCliente;
     }

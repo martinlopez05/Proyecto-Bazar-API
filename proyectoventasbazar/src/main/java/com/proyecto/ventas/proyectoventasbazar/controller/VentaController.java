@@ -4,6 +4,7 @@ import com.proyecto.ventas.proyectoventasbazar.dto.VentaDTO;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 import com.proyecto.ventas.proyectoventasbazar.model.Venta;
 import com.proyecto.ventas.proyectoventasbazar.service.IVentaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +42,7 @@ public class VentaController {
 
 
     @PostMapping("/ventas/crear")
-    public String crearventa(@RequestBody VentaDTO venta){
+    public String crearventa( @Valid @RequestBody VentaDTO venta){
         ventaServ.saveVenta(venta);
         return "Venta creada correctamente";
     }
