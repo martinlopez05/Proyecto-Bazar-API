@@ -1,6 +1,7 @@
 package com.proyecto.ventas.proyectoventasbazar.service;
 
 import com.proyecto.ventas.proyectoventasbazar.dto.DetalleDTO;
+import com.proyecto.ventas.proyectoventasbazar.exceptions.ResourceNotFoundException;
 import com.proyecto.ventas.proyectoventasbazar.model.DetalleVenta;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 import com.proyecto.ventas.proyectoventasbazar.repository.IDetalleVentaRepository;
@@ -22,18 +23,24 @@ public class DetalleVentaService implements IDetalleVentaService{
     IProductoRepository producRepo;
 
     @Override
-    public List<DetalleDTO> getDetalles() {
-        List<DetalleDTO> detalles = new ArrayList<>();
+    public List<DetalleDTO> getDetalles() throws ResourceNotFoundException {
+        List<DetalleDTO> detallesDTO = new ArrayList<>();
+        List<DetalleVenta> detalles = detalleRepo.findAll();
+        if(detalles == null || detalles.isEmpty()){
+            throw new ResourceNotFoundException("Detalles no encontrados","P-404");
+        }
         for(DetalleVenta detalle : detalleRepo.findAll()){
             DetalleDTO detalleDTO = new DetalleDTO(detalle.getIdDetalle(),detalle.getProducto().getCodigoProducto(),detalle.getCantidad(),detalle.getPrecio());
-            detalles.add(detalleDTO);
+            detallesDTO.add(detalleDTO);
         }
-        return detalles;
+        
+        return detallesDTO;
     }
 
     @Override
-    public DetalleVenta findDetalle(Long idDetalle) {
-        return detalleRepo.findById(idDetalle).orElseThrow(()-> new RuntimeException("Detalle no encontrado"));
+    public DetalleVenta findDetalle(Long idDetalle) throws ResourceNotFoundException {
+        return detalleRepo.findById(idDetalle).orElseThrow(()-> new ResourceNotFoundException("Detalle con la id" + idDetalle + " no encontrado"
+                                    ,"P-404"));
     }
 
     @Override
@@ -45,18 +52,23 @@ public class DetalleVentaService implements IDetalleVentaService{
 
 
     @Override
+    @Transactional
     public void saveDetalle(DetalleVenta detalle) {
-
         detalleRepo.save(detalle);
     }
 
 
     @Override
-    public void deleteDetalle(Long idDetalle) {
+    @Transactional
+    public void deleteDetalle(Long idDetalle) throws ResourceNotFoundException {
+        if(!detalleRepo.existsById(idDetalle)){
+            throw new ResourceNotFoundException("Detalle con la id " + idDetalle + " no encontrado", "P-404");
+        }
         detalleRepo.deleteById(idDetalle);
     }
 
     @Override
+    @Transactional
     public void editDetalle(Long idDetalle, DetalleDTO detalledto) {
         DetalleVenta detalleEditar = this.findDetalle(idDetalle);
         Producto producto = producRepo.findById(detalledto.getCodigoProducto()).orElseThrow(

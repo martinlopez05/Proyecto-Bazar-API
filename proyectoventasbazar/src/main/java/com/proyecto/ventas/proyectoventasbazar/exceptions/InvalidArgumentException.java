@@ -4,6 +4,7 @@
  */
 package com.proyecto.ventas.proyectoventasbazar.exceptions;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
@@ -12,16 +13,10 @@ import org.springframework.http.HttpStatus;
  * @author Usuario
  */
 @Getter
+@AllArgsConstructor
 public class InvalidArgumentException extends RuntimeException {
     
-    private String mensaje;
-    private String codigo;
-
-    public InvalidArgumentException(String mensaje, String codigo) {
-        this.mensaje = mensaje;
-        this.codigo = codigo;
-    }
-    
-    
+    private String menssage;
+    private String errorCode;
     
 }

@@ -1,6 +1,7 @@
 package com.proyecto.ventas.proyectoventasbazar.controller;
 
 import com.proyecto.ventas.proyectoventasbazar.dto.VentaDTO;
+import com.proyecto.ventas.proyectoventasbazar.exceptions.ExceptionUtils;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 import com.proyecto.ventas.proyectoventasbazar.model.Venta;
 import com.proyecto.ventas.proyectoventasbazar.service.IVentaService;
@@ -10,57 +11,60 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @RestController
+@RequestMapping("/ventas")
 public class VentaController {
 
     @Autowired
     IVentaService ventaServ;
 
-    @GetMapping("/ventas")
+    @GetMapping
     public List <VentaDTO> traerVentas(){
         return ventaServ.getVentas();
     }
 
-    @GetMapping("/ventas/{codigoVenta}")
-    public VentaDTO traerVenta(@PathVariable Long codigoVenta){
-        return ventaServ.getVentaDTO(codigoVenta);
+    @GetMapping("/{codigoVenta}")
+    public ResponseEntity<VentaDTO> traerVenta(@PathVariable Long codigoVenta){
+        ExceptionUtils.validateId(codigoVenta);
+        VentaDTO ventaDto = ventaServ.getVentaDTO(codigoVenta);
+        return ResponseEntity.ok(ventaDto);
     }
 
-    @GetMapping("/ventas/productos/{codigoVenta}")
+    @GetMapping("/{codigoVenta}/productos")
     public List<Producto> traerProductosVenta(@PathVariable Long codigoVenta){
+        ExceptionUtils.validateId(codigoVenta);
         return ventaServ.getProductosVenta(codigoVenta);
     }
 
-
-
-    @GetMapping("/ventas/cliente/{idCliente}")
+    @GetMapping("/cliente/{idCliente}")
     public List<VentaDTO> traerVentasPorCliente(@PathVariable Long idCliente){
+        ExceptionUtils.validateId(idCliente);
         return ventaServ.getVentasPorCliente(idCliente);
     }
 
 
-
-    @PostMapping("/ventas/crear")
-    public String crearventa( @Valid @RequestBody VentaDTO venta){
+    @PostMapping
+    public ResponseEntity<VentaDTO> crearventa( @Valid @RequestBody VentaDTO venta){
         ventaServ.saveVenta(venta);
-        return "Venta creada correctamente";
+        return new ResponseEntity<>(venta, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/ventas/eliminar/{codigoVenta}")
-    public String eliminarVenta(@PathVariable Long codigoVenta){
+    @DeleteMapping("/{codigoVenta}")
+    public ResponseEntity<?> eliminarVenta(@PathVariable Long codigoVenta){
+        ExceptionUtils.validateId(codigoVenta);
         ventaServ.deleteVenta(codigoVenta);
-        return "Venta eliminada correctamente";
+        return new ResponseEntity<>("Venta eliminada correctamente", HttpStatus.ACCEPTED);
     }
 
 
-    @PutMapping("/ventas/editar/{codigoVenta}")
-    public VentaDTO editarVenta(@PathVariable Long codigoVenta,@RequestBody VentaDTO ventadto){
+    @PutMapping("/{codigoVenta}")
+    public ResponseEntity<VentaDTO> editarVenta(@PathVariable Long codigoVenta,@RequestBody VentaDTO ventadto){
+        ExceptionUtils.validateId(codigoVenta);
         ventaServ.editVenta(codigoVenta,ventadto);
-        return ventaServ.getVentaDTO(codigoVenta);
+        VentaDTO ventaEditada = ventaServ.getVentaDTO(codigoVenta);
+        return ResponseEntity.ok(ventaEditada);
     }
-
-
-
-
 }

@@ -4,21 +4,32 @@
  */
 package com.proyecto.ventas.proyectoventasbazar.dto;
 
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author Usuario
  */
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ErrorDTO {
    
-    private String mensaje;
-    private String codigo;
+    private String message;
+    private String errorCode;
+    private LocalDateTime timestamp;
+    private String detail;
+    private String path;
 
-    public ErrorDTO(String mensaje, String codigo) {
-        this.mensaje = mensaje;
-        this.codigo = codigo;
+    public ErrorDTO(String message, String errorCode, String detail , String path) {
+        this.message = message;
+        this.errorCode = errorCode;
+        this.detail = detail;
+        this.path = path;
+        this.timestamp = LocalDateTime.now();
     }
-        
+              
 }

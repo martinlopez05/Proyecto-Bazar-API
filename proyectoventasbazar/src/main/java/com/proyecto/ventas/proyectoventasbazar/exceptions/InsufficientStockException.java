@@ -6,16 +6,18 @@ package com.proyecto.ventas.proyectoventasbazar.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author Usuario
  */
+
 @Getter
 @AllArgsConstructor
-public class ResourceNotFoundException extends RuntimeException {
-    
-    private String menssage;
+@NoArgsConstructor
+public class InsufficientStockException extends RuntimeException {
+    private String message;
     private String errorCode;
+    
 }

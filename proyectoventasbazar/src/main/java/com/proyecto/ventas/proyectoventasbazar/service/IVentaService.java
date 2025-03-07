@@ -1,6 +1,8 @@
 package com.proyecto.ventas.proyectoventasbazar.service;
 
 import com.proyecto.ventas.proyectoventasbazar.dto.VentaDTO;
+import com.proyecto.ventas.proyectoventasbazar.exceptions.InsufficientStockException;
+import com.proyecto.ventas.proyectoventasbazar.exceptions.ResourceNotFoundException;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 import com.proyecto.ventas.proyectoventasbazar.model.Venta;
 
@@ -11,9 +13,9 @@ import java.util.Locale;
 public interface IVentaService {
 
     public List<VentaDTO> getVentas();
-    public Venta findVenta(Long codigoVenta);
+    public Venta findVenta(Long codigoVenta) throws ResourceNotFoundException;
     public VentaDTO getVentaDTO(Long CodigoVenta);
-    public void saveVenta(VentaDTO ventaDTO);
+    public void saveVenta(VentaDTO ventaDTO) throws InsufficientStockException;
     public void deleteVenta(Long codigoVenta);
     public void editVenta(Long codigoVenta,VentaDTO ventadto);
     public List<Producto> getProductosVenta(Long codigoVenta);

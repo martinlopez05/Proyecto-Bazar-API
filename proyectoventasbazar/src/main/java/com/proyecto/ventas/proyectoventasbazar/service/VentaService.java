@@ -3,6 +3,10 @@ package com.proyecto.ventas.proyectoventasbazar.service;
 
 import com.proyecto.ventas.proyectoventasbazar.dto.DetalleDTO;
 import com.proyecto.ventas.proyectoventasbazar.dto.VentaDTO;
+import com.proyecto.ventas.proyectoventasbazar.exceptions.EmptyListException;
+import com.proyecto.ventas.proyectoventasbazar.exceptions.ExceptionUtils;
+import com.proyecto.ventas.proyectoventasbazar.exceptions.InsufficientStockException;
+import com.proyecto.ventas.proyectoventasbazar.exceptions.ResourceNotFoundException;
 import com.proyecto.ventas.proyectoventasbazar.model.Cliente;
 import com.proyecto.ventas.proyectoventasbazar.model.DetalleVenta;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
@@ -11,6 +15,7 @@ import com.proyecto.ventas.proyectoventasbazar.repository.IClienteRepository;
 import com.proyecto.ventas.proyectoventasbazar.repository.IDetalleVentaRepository;
 import com.proyecto.ventas.proyectoventasbazar.repository.IProductoRepository;
 import com.proyecto.ventas.proyectoventasbazar.repository.IVentaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +59,8 @@ public class VentaService implements IVentaService  {
 
     @Override
     public Venta findVenta(Long codigoVenta) {
-        return ventaRepo.findById(codigoVenta).orElseThrow(()-> new RuntimeException("Venta no encontrada"));
+        return ventaRepo.findById(codigoVenta).orElseThrow(()-> new ResourceNotFoundException
+                        ("Venta con el codigo " + codigoVenta + " no encontrada" , "P-404"));
     }
 
     @Override
@@ -73,14 +79,17 @@ public class VentaService implements IVentaService  {
 
 
     @Override
-    public void saveVenta(VentaDTO ventadto) {
+    @Transactional
+    public void saveVenta(VentaDTO ventadto) throws InsufficientStockException {
         Venta venta = new Venta();
-        Cliente cliente = clienteRepo.findById(ventadto.getIdCliente()).orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+        Cliente cliente = clienteRepo.findById(ventadto.getIdCliente()).
+                orElseThrow(() -> new ResourceNotFoundException("Cliente con la id " + ventadto.getIdCliente()
+                            +"no encontrado" , "P-404"));
+        
         venta.setCliente(cliente);
-
         for (DetalleDTO detalleDTO : ventadto.getDetalles()) {
             Producto producto = producRepo.findById(detalleDTO.getCodigoProducto())
-                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Producto con id " + detalleDTO.getCodigoProducto() + "no encontrado", "P-404"));
 
             if (detalleDTO.getCantidad() <= producto.getStock()) {
                 DetalleVenta detalle = new DetalleVenta(producto, detalleDTO.getCantidad());
@@ -88,7 +97,8 @@ public class VentaService implements IVentaService  {
                 producto.setStock(producto.getStock() - detalleDTO.getCantidad());
                 producRepo.save(producto);
             } else {
-                throw new RuntimeException("Stock insuficiente del producto: " + producto.getNombre());
+                throw new InsufficientStockException("Stock insuficiente del producto: " + producto.getNombre()
+                                + "Stock disponible: " + producto.getStock()   + ". Cantidad solicitada: " + detalleDTO.getCantidad(), "P-400");
             }
         }
 
@@ -98,12 +108,17 @@ public class VentaService implements IVentaService  {
 
 
     @Override
+    @Transactional
     public void deleteVenta(Long codigoVenta) {
+       if(!ventaRepo.existsById(codigoVenta)){
+            throw new ResourceNotFoundException("Venta con codigo " + codigoVenta + " no encontrada", "P-404" );
+       }
        ventaRepo.deleteById(codigoVenta);
     }
 
 
     @Override
+    @Transactional
     public void editVenta(Long codigoVenta, VentaDTO ventadto) {
         Venta ventaEditar = this.findVenta(codigoVenta);
         Cliente cliente = clienteRepo.findById(ventadto.getIdCliente())
@@ -155,6 +170,9 @@ public class VentaService implements IVentaService  {
     public List<VentaDTO> getVentasPorCliente(Long idCliente) {
         List<VentaDTO> ventasDTOS = new ArrayList<>();
         List<Venta> ventasCliente = ventaRepo.findByClienteIdCliente(idCliente);
+        
+        ExceptionUtils.validateListNotEmpty(ventasCliente, "No se ha cargado ninguna venta al cliente con id "
+                                            + idCliente + " en el sistema");
 
         for (Venta venta : ventasCliente) {
             List<DetalleDTO> detalles = new ArrayList<>();
@@ -174,13 +192,15 @@ public class VentaService implements IVentaService  {
     }
 
 
-    public List<Venta> getVentasPorFechas(LocalDate fecha){
+    public List<Venta> getVentasPorFechas(LocalDate fecha) throws EmptyListException{
         List<Venta> ventas = new ArrayList<>();
         for(Venta venta : ventaRepo.findAll()){
             if(venta.getFechaVenta().equals(fecha)){
                 ventas.add(venta);
             }
         }
+        
+        ExceptionUtils.validateListNotEmpty(ventas, "No se ha cargado ninguna venta en la fecha " + fecha + " en el sistema");
 
         return  ventas;
     }

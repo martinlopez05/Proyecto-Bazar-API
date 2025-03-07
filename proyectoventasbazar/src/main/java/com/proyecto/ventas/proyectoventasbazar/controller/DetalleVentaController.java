@@ -2,6 +2,7 @@ package com.proyecto.ventas.proyectoventasbazar.controller;
 
 
 import com.proyecto.ventas.proyectoventasbazar.dto.DetalleDTO;
+import com.proyecto.ventas.proyectoventasbazar.exceptions.ExceptionUtils;
 import com.proyecto.ventas.proyectoventasbazar.model.DetalleVenta;
 import com.proyecto.ventas.proyectoventasbazar.service.DetalleVentaService;
 import com.proyecto.ventas.proyectoventasbazar.service.IDetalleVentaService;
@@ -9,37 +10,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 
 @RestController
+@RequestMapping("/detalles")
 public class DetalleVentaController {
 
     @Autowired
     IDetalleVentaService detalleServ;
 
 
-    @GetMapping("/detalles")
     public List<DetalleDTO> traerDetallesVentas(){
         return detalleServ.getDetalles();
     }
 
-    @GetMapping("/detalles/{idDetalle}")
-    public DetalleDTO traerDetalleVenta(@PathVariable Long idDetalle){
-        return detalleServ.getDetalleDTO(idDetalle);
+    @GetMapping("/{idDetalle}")
+    public ResponseEntity<DetalleVenta> traerDetalleVenta(@PathVariable Long idDetalle){
+        ExceptionUtils.validateId(idDetalle);
+        DetalleVenta detalle = detalleServ.findDetalle(idDetalle);
+        return ResponseEntity.ok(detalle);
     }
 
 
-    @DeleteMapping("/detalles/eliminar/{idDetalle}")
-    public String eliminarDetalleVenta(@PathVariable Long idDetalle){
+    @DeleteMapping("/{idDetalle}")
+    public ResponseEntity<?> eliminarDetalleVenta(@PathVariable Long idDetalle){
+        ExceptionUtils.validateId(idDetalle);
         detalleServ.deleteDetalle(idDetalle);
-        return "Detalle eliminado correctamente";
+        return new ResponseEntity<>("Detalle eliminado correctamente",  HttpStatus.ACCEPTED);
     }
 
 
-    @PutMapping("/detalles/editar/{idDetalle}")
-    public DetalleVenta editarDetalleVenta(@PathVariable Long idDetalle, @RequestBody DetalleDTO detalledto){
+    @PutMapping("/{idDetalle}")
+    public ResponseEntity<DetalleVenta> editarDetalleVenta(@PathVariable Long idDetalle, @RequestBody DetalleDTO detalledto){
+        ExceptionUtils.validateId(idDetalle);
         detalleServ.editDetalle(idDetalle,detalledto);
-        return detalleServ.findDetalle(idDetalle);
+        DetalleVenta detalleEditado = detalleServ.findDetalle(idDetalle);
+        return ResponseEntity.ok(detalleEditado);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.proyecto.ventas.proyectoventasbazar.service;
 
 import com.proyecto.ventas.proyectoventasbazar.dto.DetalleDTO;
+import com.proyecto.ventas.proyectoventasbazar.exceptions.EmptyListException;
+import com.proyecto.ventas.proyectoventasbazar.exceptions.ResourceNotFoundException;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 
 import java.util.List;
@@ -8,12 +10,12 @@ import java.util.List;
 public interface IProductoService {
 
 
-    public List<Producto> getProductos();
-    public Producto findProducto(Long codigoProducto);
+    public List<Producto> getProductos() throws ResourceNotFoundException;
+    public Producto findProducto(Long codigoProducto) throws ResourceNotFoundException;
     public void saveProducto(Producto producto);
-    public void deleteProducto(Long codigoProducto);
+    public void deleteProducto(Long codigoProducto) throws ResourceNotFoundException;
     public void editProducto(Long codigoProducto,Producto producto);
-    public List<Producto> getStockMen5();
-    public List<DetalleDTO> getDetallesporProducto(Long codidgoProducto);
+    public List<Producto> getStockMenorA(int stock) throws EmptyListException;
+    public List<DetalleDTO> getDetallesporProducto(Long codidgoProducto) throws EmptyListException;
 
 }

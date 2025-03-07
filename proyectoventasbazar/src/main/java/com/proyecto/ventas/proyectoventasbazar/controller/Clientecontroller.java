@@ -1,7 +1,6 @@
 package com.proyecto.ventas.proyectoventasbazar.controller;
 
-import com.proyecto.ventas.proyectoventasbazar.exceptions.InvalidArgumentException;
-import com.proyecto.ventas.proyectoventasbazar.exceptions.ResourceNotFoundException;
+import com.proyecto.ventas.proyectoventasbazar.exceptions.ExceptionUtils;
 import com.proyecto.ventas.proyectoventasbazar.model.Cliente;
 import com.proyecto.ventas.proyectoventasbazar.service.IClienteService;
 import jakarta.validation.Valid;
@@ -10,10 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/clientes")
-public class Clientecontroller {
+public class ClienteController {
 
     @Autowired
     IClienteService clienteServ;
@@ -21,45 +21,39 @@ public class Clientecontroller {
     @GetMapping
     public List<Cliente> traerClientes() {
         List<Cliente> clientes = clienteServ.getClientes();
-        if (clientes == null || clientes.isEmpty()) {
-            throw new ResourceNotFoundException("No hay clientes", "P-400");
-        }
         return clientes;
-
     }
 
     @GetMapping("/{idCliente}")
-    public Cliente traerCliente(@PathVariable Long idCliente) throws InvalidArgumentException, ResourceNotFoundException {
-        validarIdCliente(idCliente);
-        return clienteServ.findCliente(idCliente);
+    public ResponseEntity<Cliente> traerCliente(@PathVariable Long idCliente){
+        ExceptionUtils.validateId(idCliente);
+        Cliente cliente = clienteServ.findCliente(idCliente);
+        return ResponseEntity.ok(cliente);
     }
 
-    @PostMapping("/crear")
-    public String crearCliente(@Valid @RequestBody Cliente cliente) {
+    @PostMapping
+    public ResponseEntity<Cliente> crearCliente(@Valid @RequestBody Cliente cliente) {
         clienteServ.saveCliente(cliente);
-        return "Cliente creado correctamente";
+        return new ResponseEntity(cliente, HttpStatus.CREATED);
 
     }
 
-    @DeleteMapping("/eliminar/{idCliente}")
-    public String eliminarCliente(@PathVariable Long idCliente) throws InvalidArgumentException {
-        validarIdCliente(idCliente);
+    @DeleteMapping("/{idCliente}")
+    public ResponseEntity<?> eliminarCliente(@PathVariable Long idCliente){
+        ExceptionUtils.validateId(idCliente);
         clienteServ.deleteCliente(idCliente);
-        return "Cliente eliminado correctamente";
+        return new ResponseEntity<>("Cliente eliminado correctamente", HttpStatus.OK);
     }
 
-    @PutMapping("/editar/{idCliente}")
-    public Cliente editarCliente(@PathVariable Long idCliente, @RequestBody Cliente cliente) throws InvalidArgumentException {
-        validarIdCliente(idCliente);
+    @PutMapping("/{idCliente}")
+    public ResponseEntity<Cliente> editarCliente(@PathVariable Long idCliente, @RequestBody Cliente cliente){
+        ExceptionUtils.validateId(idCliente);
         clienteServ.editCliente(idCliente, cliente);
-        return clienteServ.findCliente(idCliente);
+        Cliente clienteEditado = clienteServ.findCliente(idCliente);
+        return  ResponseEntity.ok(clienteEditado);
 
     }
 
-    private void validarIdCliente(Long idCliente) throws InvalidArgumentException {
-        if (idCliente == 0) {
-            throw new InvalidArgumentException("Por favor ingresa una id válida", "P-400");
-        }
-    }
+    
 
 }

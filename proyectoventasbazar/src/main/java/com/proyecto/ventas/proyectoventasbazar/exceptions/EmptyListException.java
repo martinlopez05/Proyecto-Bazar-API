@@ -6,7 +6,6 @@ package com.proyecto.ventas.proyectoventasbazar.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 /**
  *
@@ -14,8 +13,8 @@ import org.springframework.http.HttpStatus;
  */
 @Getter
 @AllArgsConstructor
-public class ResourceNotFoundException extends RuntimeException {
+public class EmptyListException extends RuntimeException{
     
-    private String menssage;
+    private String message;
     private String errorCode;
 }
