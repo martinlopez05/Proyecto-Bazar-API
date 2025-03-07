@@ -11,11 +11,13 @@ import lombok.Setter;
 import java.util.List;
 
 
+/**
+ * Representa un cliente.
+ * Un cliente puede realizar múltiples ventas y tiene información personal como nombre, apellido y DNI.
+ */
 @Getter
 @Setter
 @Entity
-
-
 public class Cliente {
 
     @Id

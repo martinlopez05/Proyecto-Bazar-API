@@ -9,11 +9,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 
+/**
+ * Representa un detalle de venta.
+ * Un detalle de venta contiene información sobre un producto vendido, la cantidad y el precio total.
+ */
+
+
 @Getter
 @Setter
 @Entity
-
-
 public class DetalleVenta {
 
     @Id

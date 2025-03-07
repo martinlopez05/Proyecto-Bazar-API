@@ -9,6 +9,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa una venta.
+ * Una venta tiene información sobre el cliente, la fecha de venta, el total y los detalles de los productos vendidos.
+ */
+
 
 @Getter
 @Setter

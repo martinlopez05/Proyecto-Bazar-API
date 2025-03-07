@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servicio que implementa la lógica de negocio para la gestión de detalles de venta.
+ * Proporciona métodos para realizar operaciones CRUD sobre la entidad DetalleVenta.
+ */
+
 @Service
 public class DetalleVentaService implements IDetalleVentaService{
 
@@ -22,6 +27,12 @@ public class DetalleVentaService implements IDetalleVentaService{
     @Autowired
     IProductoRepository producRepo;
 
+    /**
+     * Obtiene la lista de todos los detalles de venta almacenados en la base de datos.
+     * 
+     * @return Lista de detalles de venta en formato DTO.
+     * @throws ResourceNotFoundException Si no se encuentran detalles de venta registrados.
+     */
     @Override
     public List<DetalleDTO> getDetalles() throws ResourceNotFoundException {
         List<DetalleDTO> detallesDTO = new ArrayList<>();
@@ -29,7 +40,7 @@ public class DetalleVentaService implements IDetalleVentaService{
         if(detalles == null || detalles.isEmpty()){
             throw new ResourceNotFoundException("Detalles no encontrados","P-404");
         }
-        for(DetalleVenta detalle : detalleRepo.findAll()){
+        for(DetalleVenta detalle : detalles){
             DetalleDTO detalleDTO = new DetalleDTO(detalle.getIdDetalle(),detalle.getProducto().getCodigoProducto(),detalle.getCantidad(),detalle.getPrecio());
             detallesDTO.add(detalleDTO);
         }
@@ -37,12 +48,25 @@ public class DetalleVentaService implements IDetalleVentaService{
         return detallesDTO;
     }
 
+      /**
+     * Busca un detalle de venta en la base de datos según su identificador único.
+     * 
+     * @param idDetalle Identificador del detalle de venta a buscar.
+     * @return DetalleVenta encontrado.
+     * @throws ResourceNotFoundException Si el detalle de venta no existe en la base de datos.
+     */
     @Override
     public DetalleVenta findDetalle(Long idDetalle) throws ResourceNotFoundException {
         return detalleRepo.findById(idDetalle).orElseThrow(()-> new ResourceNotFoundException("Detalle con la id" + idDetalle + " no encontrado"
                                     ,"P-404"));
     }
 
+    /**
+     * Obtiene un detalle de venta en formato DTO según su identificador.
+     * 
+     * @param idDetalle Identificador del detalle de venta.
+     * @return DetalleVenta en formato DTO.
+     */
     @Override
     public DetalleDTO getDetalleDTO(Long idDetalle) {
         DetalleVenta detalleBuscar = findDetalle(idDetalle);
@@ -50,7 +74,12 @@ public class DetalleVentaService implements IDetalleVentaService{
         return detalleDTO;
     }
 
-
+    
+    /**
+     * Guarda un nuevo detalle de venta en la base de datos.
+     * 
+     * @param detalle Objeto DetalleVenta que se desea guardar.
+     */
     @Override
     @Transactional
     public void saveDetalle(DetalleVenta detalle) {
@@ -58,6 +87,12 @@ public class DetalleVentaService implements IDetalleVentaService{
     }
 
 
+    /**
+     * Elimina un detalle de venta de la base de datos según su identificador único.
+     * 
+     * @param idDetalle Identificador del detalle de venta a eliminar.
+     * @throws ResourceNotFoundException Si el detalle de venta no existe en la base de datos.
+     */
     @Override
     @Transactional
     public void deleteDetalle(Long idDetalle) throws ResourceNotFoundException {
@@ -67,6 +102,13 @@ public class DetalleVentaService implements IDetalleVentaService{
         detalleRepo.deleteById(idDetalle);
     }
 
+    
+    /**
+     * Modifica los datos de un detalle de venta existente en la base de datos.
+     * 
+     * @param idDetalle Identificador del detalle de venta a editar.
+     * @param detalledto Objeto DetalleDTO con los nuevos datos.
+     */
     @Override
     @Transactional
     public void editDetalle(Long idDetalle, DetalleDTO detalledto) {

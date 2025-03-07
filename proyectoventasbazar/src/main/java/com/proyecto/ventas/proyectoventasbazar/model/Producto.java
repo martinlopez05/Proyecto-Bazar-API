@@ -15,6 +15,12 @@ import lombok.Setter;
 import java.util.List;
 
 
+/**
+ * Representa un producto.
+ * Un producto tiene información como nombre, marca, costo y stock, y puede estar asociado a múltiples detalles de venta.
+ */
+
+
 @Getter
 @Setter
 @Entity

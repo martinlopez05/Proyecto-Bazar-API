@@ -15,24 +15,46 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+/**
+ * Controlador REST para gestionar operaciones relacionadas con la entidad Producto.
+ * Proporciona endpoints para realizar operaciones CRUD sobre los productos.
+ */
+
 @RestController
 @RequestMapping("/productos")
 public class ProductoController {
     @Autowired
     IProductoService producServ;
 
+    /**
+     * Obtiene la lista completa de productos almacenados en la base de datos.
+     * 
+     * @return Lista de objetos Producto.
+     */
     @GetMapping
     public List<Producto> traerProductos (){
         return producServ.getProductos();
     }
-
+    
+    /**
+     * Obtiene un producto específico según su código.
+     * 
+     * @param codigoProducto Código único del producto.
+     * @return Producto encontrado o un error 404 si no existe.
+     */
     @GetMapping("/{codigoProducto}")
     public ResponseEntity<Producto> traerProducto(@PathVariable Long codigoProducto){
         ExceptionUtils.validateId(codigoProducto);
         Producto producto = producServ.findProducto(codigoProducto);
         return ResponseEntity.ok(producto);
     }
-
+    
+    /**
+     * Obtiene la lista de productos cuyo stock es menor o igual a un número dado.
+     * 
+     * @param numeroStock Límite máximo de stock.
+     * @return Lista de productos con stock menor o igual al número especificado.
+     */
     @GetMapping("/stock-maximo/{numeroStock}")
     public List<Producto> traerProdStockMen5(@PathVariable int numeroStock){
         if(numeroStock<0){
@@ -41,18 +63,37 @@ public class ProductoController {
         return producServ.getStockMenorA(numeroStock);
     }
 
+    /**
+     * Obtiene la lista de detalles asociados a un producto específico.
+     * 
+     * @param codigoProducto Código único del producto.
+     * @return Lista de detalles asociados al producto.
+     */
     @GetMapping("/detalles/{codigoProducto}")
     public List<DetalleDTO> traerDetallesporProducto( @PathVariable  Long codigoProducto){
         ExceptionUtils.validateId(codigoProducto);
         return producServ.getDetallesporProducto(codigoProducto);
     }
 
+    
+    /**
+     * Crea un nuevo producto en la base de datos.
+     * 
+     * @param producto Objeto Producto a ser creado.
+     * @return Producto creado con estado HTTP 201 (CREATED).
+     */
     @PostMapping
     public ResponseEntity<Producto> crearProducto(@Valid @RequestBody Producto producto){
         producServ.saveProducto(producto);
         return new ResponseEntity<>(producto, HttpStatus.CREATED);
     }
 
+    /**
+     * Elimina un producto de la base de datos según su código.
+     * 
+     * @param codigoProducto Código único del producto a eliminar.
+     * @return Mensaje de éxito con estado HTTP 202 (ACCEPTED).
+     */
     @DeleteMapping("/{codigoProducto}")
     public ResponseEntity<?> eliminarProducto(@PathVariable Long codigoProducto){
         ExceptionUtils.validateId(codigoProducto);
@@ -60,6 +101,13 @@ public class ProductoController {
         return new ResponseEntity<>("Producot eliminado correctamente", HttpStatus.ACCEPTED);
     }
 
+    /**
+     * Actualiza los datos de un producto existente.
+     * 
+     * @param codigoProducto Código único del producto a actualizar.
+     * @param producto Objeto Producto con los datos actualizados.
+     * @return Producto actualizado con estado HTTP 200 (OK).
+     */
     @PutMapping("/{codigoProducto}")
     public ResponseEntity<Producto> editarProducto(@PathVariable Long codigoProducto,@RequestBody Producto producto){
            ExceptionUtils.validateId(codigoProducto);
