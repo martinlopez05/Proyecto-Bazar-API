@@ -73,6 +73,17 @@ public class VentaController {
         ExceptionUtils.validateId(idCliente);
         return ventaServ.getVentasPorCliente(idCliente);
     }
+    
+    /**
+     * Obtiene la lista de ventas realizadas en una fecha en específico.
+     * 
+     * @param fecha Identificador de la fecha.
+     * @return Lista de ventas realizadas en esa fecha.
+     */
+    @GetMapping("/fecha/{fecha}")
+    public List<VentaDTO> traerVentasPorFecha(@PathVariable LocalDate fecha){
+        return ventaServ.getVentasPorFecha(fecha);
+    }
 
     /**
      * Crea una nueva venta en la base de datos.
@@ -81,8 +92,8 @@ public class VentaController {
      * @return Venta creada con estado HTTP 201 (CREATED).
      */
     @PostMapping
-    public ResponseEntity<VentaDTO> crearventa( @Valid @RequestBody VentaDTO venta){
-        ventaServ.saveVenta(venta);
+    public ResponseEntity<VentaDTO> crearVenta( @Valid @RequestBody VentaDTO ventaDto){
+        VentaDTO venta = ventaServ.saveVenta(ventaDto);
         return new ResponseEntity<>(venta, HttpStatus.CREATED);
     }
     
@@ -99,18 +110,4 @@ public class VentaController {
         return new ResponseEntity<>("Venta eliminada correctamente", HttpStatus.ACCEPTED);
     }
 
-    /**
-     * Actualiza los datos de una venta existente.
-     * 
-     * @param codigoVenta Identificador de la venta a actualizar.
-     * @param ventadto Objeto VentaDTO con los datos actualizados.
-     * @return Venta actualizada con estado HTTP 200 (OK).
-     */
-    @PutMapping("/{codigoVenta}")
-    public ResponseEntity<VentaDTO> editarVenta(@PathVariable Long codigoVenta,@RequestBody VentaDTO ventadto){
-        ExceptionUtils.validateId(codigoVenta);
-        ventaServ.editVenta(codigoVenta,ventadto);
-        VentaDTO ventaEditada = ventaServ.getVentaDTO(codigoVenta);
-        return ResponseEntity.ok(ventaEditada);
-    }
 }

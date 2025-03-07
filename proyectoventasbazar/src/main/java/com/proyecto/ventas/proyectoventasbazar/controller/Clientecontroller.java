@@ -59,7 +59,6 @@ public class ClienteController {
     public ResponseEntity<Cliente> crearCliente(@Valid @RequestBody Cliente cliente) {
         clienteServ.saveCliente(cliente);
         return new ResponseEntity(cliente, HttpStatus.CREATED);
-
     }
 
     /**

@@ -26,7 +26,7 @@ public class ClienteService implements IClienteService {
 
     /**
      * Obtiene la lista de todos los clientes almacenados en la base de datos.
-     * 
+     *
      * @return Lista de clientes.
      * @throws EmptyListException Si no hay clientes registrados.
      */
@@ -34,32 +34,31 @@ public class ClienteService implements IClienteService {
     public List<Cliente> getClientes() throws EmptyListException {
         List<Cliente> clientes = clienteRepo.findAll();
         ExceptionUtils.validateListNotEmpty(clientes, "No se han cargado clientes al sistema");
-        
+
         return clientes;
     }
 
     /**
      * Busca un cliente en la base de datos según su identificador único.
-     * 
+     *
      * @param idCliente Identificador del cliente a buscar.
      * @return Cliente encontrado.
-     * @throws ResourceNotFoundException Si el cliente no existe en la base de datos.
+     * @throws ResourceNotFoundException Si el cliente no existe en la base de
+     * datos.
      */
-    
     @Override
     public Cliente findCliente(Long idCliente) throws ResourceNotFoundException {
         Optional<Cliente> cliente = clienteRepo.findById(idCliente);
-        if(!cliente.isPresent()){
-            throw new ResourceNotFoundException("Cliente con la id " + idCliente + " no encontrado" , "P-404");
+        if (!cliente.isPresent()) {
+            throw new ResourceNotFoundException("Cliente con la id " + idCliente + " no encontrado", "P-404");
         }
         return cliente.get();
-              
+
     }
-    
 
     /**
      * Guarda un nuevo cliente en la base de datos.
-     * 
+     *
      * @param cliente Objeto Cliente que se desea guardar.
      */
     @Override
@@ -68,25 +67,25 @@ public class ClienteService implements IClienteService {
         clienteRepo.save(cliente);
     }
 
-    
     /**
      * Elimina un cliente de la base de datos según su identificador único.
-     * 
+     *
      * @param idCliente Identificador del cliente a eliminar.
-     * @throws ResourceNotFoundException Si el cliente no existe en la base de datos.
+     * @throws ResourceNotFoundException Si el cliente no existe en la base de
+     * datos.
      */
     @Override
     @Transactional
     public void deleteCliente(Long idCliente) throws ResourceNotFoundException {
-        if(!clienteRepo.existsById(idCliente)){
-              throw new ResourceNotFoundException("Cliente con la id " + idCliente +  " no encontrado", "P-404");
+        if (!clienteRepo.existsById(idCliente)) {
+            throw new ResourceNotFoundException("Cliente con la id " + idCliente + " no encontrado", "P-404");
         }
         clienteRepo.deleteById(idCliente);
     }
 
     /**
      * Modifica los datos de un cliente existente en la base de datos.
-     * 
+     *
      * @param idCliente Identificador del cliente a editar.
      * @param cliente Objeto Cliente con los nuevos datos.
      */
@@ -94,12 +93,21 @@ public class ClienteService implements IClienteService {
     @Transactional
     public void editCliente(Long idCliente, Cliente cliente) {
         Cliente clienteEditar = this.findCliente(idCliente);
-        clienteEditar.setNombre(cliente.getNombre());
-        clienteEditar.setApellido(cliente.getApellido());
-        clienteEditar.setVentas(cliente.getVentas());
-        clienteEditar.setDni(cliente.getDni());
+        
+        if (cliente.getNombre() != null) {
+            clienteEditar.setNombre(cliente.getNombre());
+        }
+        if (cliente.getApellido() != null) {
+            clienteEditar.setApellido(cliente.getApellido());
+        }
+        if (cliente.getVentas() != null) {
+            clienteEditar.setVentas(cliente.getVentas());
+        }
+        if (cliente.getDni() != null) {
+            clienteEditar.setDni(cliente.getDni());
+        }
+
         clienteRepo.save(clienteEditar);
     }
-    
-    
+
 }

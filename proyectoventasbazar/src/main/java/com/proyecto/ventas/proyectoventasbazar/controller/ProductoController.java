@@ -69,7 +69,7 @@ public class ProductoController {
      * @param codigoProducto Código único del producto.
      * @return Lista de detalles asociados al producto.
      */
-    @GetMapping("/detalles/{codigoProducto}")
+    @GetMapping("/{codigoProducto}/detalles")
     public List<DetalleDTO> traerDetallesporProducto( @PathVariable  Long codigoProducto){
         ExceptionUtils.validateId(codigoProducto);
         return producServ.getDetallesporProducto(codigoProducto);
@@ -98,7 +98,7 @@ public class ProductoController {
     public ResponseEntity<?> eliminarProducto(@PathVariable Long codigoProducto){
         ExceptionUtils.validateId(codigoProducto);
         producServ.deleteProducto(codigoProducto);
-        return new ResponseEntity<>("Producot eliminado correctamente", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("Producto eliminado correctamente", HttpStatus.ACCEPTED);
     }
 
     /**

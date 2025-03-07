@@ -10,7 +10,7 @@ import java.util.List;
 public interface IProductoService {
 
 
-    public List<Producto> getProductos() throws ResourceNotFoundException;
+    public List<Producto> getProductos() throws EmptyListException;
     public Producto findProducto(Long codigoProducto) throws ResourceNotFoundException;
     public void saveProducto(Producto producto);
     public void deleteProducto(Long codigoProducto) throws ResourceNotFoundException;

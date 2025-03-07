@@ -13,13 +13,12 @@ import java.util.Locale;
 
 public interface IVentaService {
 
-    public List<VentaDTO> getVentas();
+    public List<VentaDTO> getVentas() throws EmptyListException;
     public Venta findVenta(Long codigoVenta) throws ResourceNotFoundException;
     public VentaDTO getVentaDTO(Long CodigoVenta);
-    public void saveVenta(VentaDTO ventaDTO) throws ResourceNotFoundException, InsufficientStockException ;
+    public VentaDTO saveVenta(VentaDTO ventaDTO) throws ResourceNotFoundException, InsufficientStockException ;
     public void deleteVenta(Long codigoVenta) throws ResourceNotFoundException;
-    public void editVenta(Long codigoVenta,VentaDTO ventadto) throws ResourceNotFoundException, InsufficientStockException;
-    public List<Producto> getProductosVenta(Long codigoVenta);
+    public List<Producto> getProductosVenta(Long codigoVenta) throws EmptyListException;
     public List<VentaDTO> getVentasPorCliente(Long idCliente);
-    public List<Venta> getVentasPorFechas(LocalDate fecha) throws EmptyListException;
+    public List<VentaDTO> getVentasPorFecha(LocalDate fecha) throws EmptyListException;
 }

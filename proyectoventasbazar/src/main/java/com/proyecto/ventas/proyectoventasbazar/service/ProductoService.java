@@ -32,7 +32,7 @@ public class ProductoService implements IProductoService {
      * sistema.
      */
     @Override
-    public List<Producto> getProductos() throws ResourceNotFoundException {
+    public List<Producto> getProductos() throws EmptyListException {
         List<Producto> productos = producRepo.findAll();
         ExceptionUtils.validateListNotEmpty(productos, "No se han cargado productos en el sistema");
         return productos;
@@ -49,7 +49,7 @@ public class ProductoService implements IProductoService {
     @Override
     public Producto findProducto(Long codigoProducto) throws ResourceNotFoundException {
         return producRepo.findById(codigoProducto).orElseThrow(() -> new ResourceNotFoundException("Producto con codigo" + codigoProducto + " no encontrado",
-                 "P-404"));
+                "P-404"));
     }
 
     /**
@@ -88,10 +88,20 @@ public class ProductoService implements IProductoService {
     @Transactional
     public void editProducto(Long codigoProducto, Producto producto) {
         Producto productoEditar = this.findProducto(codigoProducto);
-        productoEditar.setNombre(producto.getNombre());
-        productoEditar.setCosto(producto.getCosto());
-        productoEditar.setMarca(producto.getMarca());
-        productoEditar.setStock(producto.getStock());
+
+        if (producto.getNombre() != null) {
+            productoEditar.setNombre(producto.getNombre());
+        }
+        if (producto.getCosto() != null) {
+            productoEditar.setCosto(producto.getCosto());
+        }
+        if (producto.getMarca() != null) {
+            productoEditar.setMarca(producto.getMarca());
+        }
+        if (producto.getStock() != null) {
+            productoEditar.setStock(producto.getStock());
+        }
+
         producRepo.save(productoEditar);
     }
 
@@ -100,7 +110,8 @@ public class ProductoService implements IProductoService {
      *
      * @param stock El valor límite de stock.
      * @return Lista de productos con stock menor al valor proporcionado.
-     * @throws EmptyListException Si no se encuentran productos con stock inferior al valor especificado.
+     * @throws EmptyListException Si no se encuentran productos con stock
+     * inferior al valor especificado.
      */
     @Override
     public List<Producto> getStockMenorA(int stock) throws EmptyListException {
@@ -111,7 +122,7 @@ public class ProductoService implements IProductoService {
                 prodStockMenor.add(prod);
             }
         }
-        ExceptionUtils.validateListNotEmpty(prodStockMenor, "Productos con stock menor a" + stock + "no encontrados");
+        ExceptionUtils.validateListNotEmpty(prodStockMenor, "Productos con stock menor a " + stock + " no encontrados");
         return prodStockMenor;
     }
 
@@ -120,15 +131,16 @@ public class ProductoService implements IProductoService {
      *
      * @param codigoProducto El código del producto a buscar.
      * @return Lista de objetos DetalleDTO correspondientes al producto.
-     * @throws ResourceNotFoundException Si el producto con el código no es encontrado.
+     * @throws ResourceNotFoundException Si el producto con el código no es
+     * encontrado.
      */
     @Override
-    public List<DetalleDTO> getDetallesporProducto(Long codigoProducto) throws ResourceNotFoundException {
+    public List<DetalleDTO> getDetallesporProducto(Long codigoProducto) throws EmptyListException {
         Producto producto = this.findProducto(codigoProducto);
         List<DetalleDTO> detalles = new ArrayList<>();
         for (DetalleVenta detalle : producto.getDetallesProduc()) {
             DetalleDTO detalleDTO = new DetalleDTO(detalle.getIdDetalle(), detalle.getProducto().getCodigoProducto(), detalle.getCantidad(),
-                     detalle.getPrecio());
+                    detalle.getPrecio());
             detalles.add(detalleDTO);
 
         }

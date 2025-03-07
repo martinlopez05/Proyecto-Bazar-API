@@ -41,13 +41,13 @@ public class Producto {
        
        @PositiveOrZero(message = "el valor del costo debe ser mayor o igual a cero")
        @NotNull(message = "el campo costo no puede estar en blanco")
-       private double costo;
+       private Double costo;
        
        @PositiveOrZero(message = "el valor de stock debe ser mayor o igual a cero")
        @NotNull(message = "el campo stock no puede estar en blanco")
-       private double stock;
+       private Double stock;
 
-       @OneToMany(mappedBy = "producto",cascade = CascadeType.ALL ,orphanRemoval = true)
+       @OneToMany(mappedBy = "producto" ,orphanRemoval = true)
        @JsonIgnore
        private List<DetalleVenta> detallesProduc;
 
