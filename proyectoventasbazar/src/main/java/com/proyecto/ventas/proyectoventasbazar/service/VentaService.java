@@ -105,13 +105,13 @@ public class VentaService implements IVentaService {
      * @param ventadto El objeto {@link VentaDTO} que contiene los detalles de
      * la venta.
      * @return Un objeto {@link VentaDTO} que representa la venta.
-     * 
+     *
      * @throws ResourceNotFoundException Si no se encuentra el cliente o el
      * producto.
      * @throws InsufficientStockException Si el stock del producto es
      * insuficiente.
-     * 
-     * 
+     *
+     *
      */
     @Override
     @Transactional
@@ -128,7 +128,7 @@ public class VentaService implements IVentaService {
 
             if (detalleDTO.getCantidad() <= producto.getStock()) {
                 DetalleVenta detalle = new DetalleVenta(producto, detalleDTO.getCantidad());
-                venta.agregarDetalle(detalle);
+                this.agregarDetalle(detalle, venta);
                 producto.setStock(producto.getStock() - detalleDTO.getCantidad());
                 producRepo.save(producto);
             } else {
@@ -137,10 +137,10 @@ public class VentaService implements IVentaService {
             }
         }
 
-        venta.calcularTotal();
+        this.calcularTotal(venta);
         ventaRepo.save(venta);
         return this.getVentaDTO(venta.getCodigoVenta());
-        
+
     }
 
     /**
@@ -159,7 +159,6 @@ public class VentaService implements IVentaService {
         ventaRepo.deleteById(codigoVenta);
     }
 
-
     /**
      * Obtiene la lista de productos asociados a una venta dada por su código.
      *
@@ -169,7 +168,7 @@ public class VentaService implements IVentaService {
      * indicada.
      */
     @Override
-    public List<Producto> getProductosVenta(Long codigoVenta) throws EmptyListException{
+    public List<Producto> getProductosVenta(Long codigoVenta) throws EmptyListException {
 
         Venta ventaBuscar = this.findVenta(codigoVenta);
         List<Producto> productos = new ArrayList<>();
@@ -223,13 +222,48 @@ public class VentaService implements IVentaService {
                 ventas.add(venta);
             }
         }
-        for(Venta venta : ventas ){
+        for (Venta venta : ventas) {
             ventasDTO.add(this.getVentaDTO(venta.getCodigoVenta()));
         }
 
         ExceptionUtils.validateListNotEmpty(ventas, "No se ha cargado ninguna venta en la fecha " + fecha + " en el sistema");
 
         return ventasDTO;
+    }
+
+    /**
+     * Calcula el total de una venta sumando los precios de todos los detalles
+     * asociados.
+     *
+     * @param venta La venta para la cual se calculará el total. No puede ser
+     * {@code null}.
+     * @throws IllegalArgumentException Si la venta es {@code null} o si no
+     * tiene detalles.
+     */
+    public void calcularTotal(Venta venta) throws IllegalArgumentException{
+        double totalVenta = 0;
+
+        for (DetalleVenta detalle : venta.getDetalles()) {
+            totalVenta += detalle.getPrecio();
+        }
+
+        venta.setTotal(totalVenta);
+    }
+
+    /**
+     * Agrega un detalle a una venta y establece la relación bidireccional entre
+     * el detalle y la venta.
+     *
+     * @param detalle El detalle que se agregará a la venta. No puede ser
+     * {@code null}.
+     * @param venta La venta a la que se agregará el detalle. No puede ser
+     * {@code null}.
+     * @throws IllegalArgumentException Si el detalle o la venta son
+     * {@code null}.
+     */
+    public void agregarDetalle(DetalleVenta detalle, Venta venta) throws IllegalArgumentException {
+        detalle.setVenta(venta);
+        venta.getDetalles().add(detalle);
     }
 
 }

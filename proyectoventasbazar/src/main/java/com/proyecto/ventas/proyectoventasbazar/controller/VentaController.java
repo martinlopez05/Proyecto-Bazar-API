@@ -88,7 +88,7 @@ public class VentaController {
     /**
      * Crea una nueva venta en la base de datos.
      * 
-     * @param venta Objeto VentaDTO con los datos de la nueva venta.
+     * @param ventaDto Objeto VentaDTO con los datos de la nueva venta.
      * @return Venta creada con estado HTTP 201 (CREATED).
      */
     @PostMapping

@@ -46,23 +46,4 @@ public class Venta {
         this.detalles = new ArrayList<>();
     }
 
-
-
-    public void calcularTotal() {
-        double totalVenta = 0;
-
-        for (DetalleVenta detalle : detalles) {
-            totalVenta += detalle.getPrecio();
-        }
-
-        this.total = totalVenta;
-    }
-
-
-    public void agregarDetalle(DetalleVenta detalle){
-        detalle.setVenta(this);
-        detalles.add(detalle);
-    }
-
-
 }
