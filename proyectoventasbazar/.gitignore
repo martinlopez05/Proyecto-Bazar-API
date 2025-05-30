@@ -5,6 +5,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 proyectoventasbazar/src/main/resources/application.properties
+.env
 
 
 ### STS ###

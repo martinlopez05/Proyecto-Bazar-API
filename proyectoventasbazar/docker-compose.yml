@@ -1,0 +1,33 @@
+
+services:
+
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - app_networks
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD}
+
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3306:3306"
+    networks:
+      - app_networks
+    volumes:
+      - data_mysql:/var/lib/mysql
+
+
+volumes:
+  data_mysql:
+
+networks:
+  app_networks:
