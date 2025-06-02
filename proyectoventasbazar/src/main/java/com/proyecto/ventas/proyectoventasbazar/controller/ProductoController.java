@@ -6,6 +6,7 @@ import com.proyecto.ventas.proyectoventasbazar.exceptions.InvalidArgumentExcepti
 import com.proyecto.ventas.proyectoventasbazar.model.Cliente;
 import com.proyecto.ventas.proyectoventasbazar.model.Producto;
 import com.proyecto.ventas.proyectoventasbazar.service.IProductoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
  * Proporciona endpoints para realizar operaciones CRUD sobre los productos.
  */
 
+@Tag(name = "Producto Controller", description = "Operaciones relacionadas con productos")
 @RestController
 @RequestMapping("/productos")
 public class ProductoController {

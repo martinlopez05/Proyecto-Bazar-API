@@ -40,6 +40,7 @@ com\proyecto\ventas\proyectoventasbazar\dto\ErrorDTOValidaciones.class
 com\proyecto\ventas\proyectoventasbazar\dto\AuthRequestDTO$AuthRequestDTOBuilder.class
 com\proyecto\ventas\proyectoventasbazar\exceptions\ResourceNotFoundException.class
 com\proyecto\ventas\proyectoventasbazar\model\Producto.class
+com\proyecto\ventas\proyectoventasbazar\config\OpenApiConfig.class
 com\proyecto\ventas\proyectoventasbazar\dto\RegisterRequestDTO$RegisterRequestDTOBuilder.class
 com\proyecto\ventas\proyectoventasbazar\service\AuthService.class
 com\proyecto\ventas\proyectoventasbazar\exceptions\EmptyListException.class

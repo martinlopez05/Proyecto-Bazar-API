@@ -20,6 +20,7 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
+
     @PostMapping("/register")
     public RegisterResponseDTO register(@RequestBody @Valid RegisterRequestDTO registerRequestDTO){
         return authService.register(registerRequestDTO);

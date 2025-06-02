@@ -10,6 +10,7 @@ services:
     depends_on:
       - db
     environment:
+      - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
 
 

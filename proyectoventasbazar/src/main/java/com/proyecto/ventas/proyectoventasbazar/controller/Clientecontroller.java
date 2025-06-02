@@ -1,8 +1,16 @@
 package com.proyecto.ventas.proyectoventasbazar.controller;
 
+import com.proyecto.ventas.proyectoventasbazar.dto.ErrorDTO;
 import com.proyecto.ventas.proyectoventasbazar.exceptions.ExceptionUtils;
 import com.proyecto.ventas.proyectoventasbazar.model.Cliente;
 import com.proyecto.ventas.proyectoventasbazar.service.IClienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +24,7 @@ import org.springframework.http.ResponseEntity;
  * Proporciona endpoints para realizar operaciones CRUD sobre los clientes.
  */
 
+@Tag(name = "Cliente Controller", description = "Operaciones relacionadas con clientes")
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
@@ -24,24 +33,33 @@ public class ClienteController {
     IClienteService clienteServ;
 
     
-    /**
-     * Obtiene la lista completa de clientes almacenados en la base de datos.
-     * 
-     * @return Lista de objetos Cliente.
-     */
+
     @GetMapping
+    @Operation(
+            summary = "Obtener todos los clientes",
+            description = "Devuelve la lista completa de clientes almacenados en la base de datos.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Lista de clientes obtenida exitosamente",
+                            content = @Content(schema = @Schema(implementation = Cliente.class))
+                    )
+            }
+    )
     public List<Cliente> traerClientes() {
         List<Cliente> clientes = clienteServ.getClientes();
         return clientes;
     }
 
-    /**
-     * Obtiene un cliente específico según su identificador único.
-     * 
-     * @param idCliente Identificador único del cliente.
-     * @return Cliente encontrado o un error 404 si no existe.
-     */
+
     @GetMapping("/{idCliente}")
+    @Operation(summary = "Obtiene un cliente por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(schema = @Schema(implementation = Cliente.class))),
+            @ApiResponse(responseCode = "404", description = "No encontrado",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
+    })
     public ResponseEntity<Cliente> traerCliente(@PathVariable Long idCliente){
         ExceptionUtils.validateId(idCliente);
         Cliente cliente = clienteServ.findCliente(idCliente);
@@ -49,38 +67,35 @@ public class ClienteController {
     }
     
     
-    /**
-     * Crea un nuevo cliente en la base de datos.
-     * 
-     * @param cliente Objeto Cliente con los datos a almacenar.
-     * @return Cliente creado con un estado HTTP 201 (CREATED).
-     */
+
     @PostMapping
     public ResponseEntity<Cliente> crearCliente(@Valid @RequestBody Cliente cliente) {
         clienteServ.saveCliente(cliente);
         return new ResponseEntity(cliente, HttpStatus.CREATED);
     }
 
-    /**
-     * Elimina un cliente específico según su identificador único.
-     * 
-     * @param idCliente Identificador del cliente a eliminar.
-     * @return Mensaje de éxito con estado HTTP 200 (OK).
-     */
+
+
     @DeleteMapping("/{idCliente}")
+    @Operation(
+            summary = "Eliminar cliente",
+            description = "Elimina un cliente específico según su identificador único.",
+            parameters = {
+                    @Parameter(name = "idCliente", description = "ID del cliente a eliminar", required = true)
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Cliente eliminado correctamente"),
+                    @ApiResponse(responseCode = "404", description = "Cliente no encontrado")
+            }
+    )
     public ResponseEntity<?> eliminarCliente(@PathVariable Long idCliente){
         ExceptionUtils.validateId(idCliente);
         clienteServ.deleteCliente(idCliente);
         return new ResponseEntity<>("Cliente eliminado correctamente", HttpStatus.OK);
     }
 
-    /**
-     * Actualiza los datos de un cliente existente.
-     * 
-     * @param idCliente Identificador del cliente a actualizar.
-     * @param cliente Objeto Cliente con los datos actualizados.
-     * @return Cliente actualizado con estado HTTP 200 (OK).
-     */
+
+
     @PutMapping("/{idCliente}")
     public ResponseEntity<Cliente> editarCliente(@PathVariable Long idCliente, @RequestBody Cliente cliente){
         ExceptionUtils.validateId(idCliente);

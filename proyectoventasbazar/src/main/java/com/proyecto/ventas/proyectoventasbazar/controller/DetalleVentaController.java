@@ -6,6 +6,7 @@ import com.proyecto.ventas.proyectoventasbazar.exceptions.ExceptionUtils;
 import com.proyecto.ventas.proyectoventasbazar.model.DetalleVenta;
 import com.proyecto.ventas.proyectoventasbazar.service.DetalleVentaService;
 import com.proyecto.ventas.proyectoventasbazar.service.IDetalleVentaService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
  * Proporciona endpoints para realizar operaciones CRUD sobre los detalles de venta.
  */
 
+@Tag(name = "DetalleVenta Controller", description = "Operaciones relacionadas con detalles de una venta")
 @RestController
 @RequestMapping("/detalles")
 public class DetalleVentaController {
