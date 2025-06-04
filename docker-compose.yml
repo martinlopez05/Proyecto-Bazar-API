@@ -1,8 +1,7 @@
-
 services:
 
   api:
-    image: martinlopez05/bazar-api:v4
+    image: martinlopez05/bazar-api:v5
     ports:
       - "8080:8080"
     networks:
@@ -10,15 +9,16 @@ services:
     depends_on:
       - db
     environment:
-      DB_USERNAME: root
-      DB_PASSWORD: 123456
-
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: db
+    restart: always
 
   db:
     image: mysql:8
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: proyecto_bazar
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - "3306:3306"
     networks:
@@ -32,3 +32,4 @@ volumes:
 
 networks:
   app_networks:
+    driver: bridge
