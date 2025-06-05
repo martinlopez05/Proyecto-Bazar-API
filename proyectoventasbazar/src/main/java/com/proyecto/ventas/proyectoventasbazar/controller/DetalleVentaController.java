@@ -6,6 +6,10 @@ import com.proyecto.ventas.proyectoventasbazar.exceptions.ExceptionUtils;
 import com.proyecto.ventas.proyectoventasbazar.model.DetalleVenta;
 import com.proyecto.ventas.proyectoventasbazar.service.DetalleVentaService;
 import com.proyecto.ventas.proyectoventasbazar.service.IDetalleVentaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,21 +31,18 @@ public class DetalleVentaController {
     @Autowired
     IDetalleVentaService detalleServ;
 
-    /**
-     * Obtiene la lista completa de detalles de ventas almacenados en la base de datos.
-     * 
-     * @return Lista de objetos DetalleDTO.
-     */
-    public List<DetalleDTO> traerDetallesVentas(){
-        return detalleServ.getDetalles();
-    }
 
-    /**
-     * Obtiene un detalle de venta específico según su identificador único.
-     * 
-     * @param idDetalle Identificador único del detalle de venta.
-     * @return Detalle de venta encontrado o un error 404 si no existe.
-     */
+
+    @Operation(
+            summary = "Obtener detalle de venta por ID",
+            description = "Devuelve el detalle de venta correspondiente al ID proporcionado",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Detalle de venta encontrado",
+                            content = @Content(schema = @Schema(implementation = DetalleVenta.class))),
+                    @ApiResponse(responseCode = "400", description = "ID inválido"),
+                    @ApiResponse(responseCode = "404", description = "Detalle no encontrado")
+            }
+    )
     @GetMapping("/{idDetalle}")
     public ResponseEntity<DetalleVenta> traerDetalleVenta(@PathVariable Long idDetalle){
         ExceptionUtils.validateId(idDetalle);
@@ -49,12 +50,15 @@ public class DetalleVentaController {
         return ResponseEntity.ok(detalle);
     }
 
-    /**
-     * Elimina un detalle de venta específico según su identificador único.
-     * 
-     * @param idDetalle Identificador del detalle de venta a eliminar.
-     * @return Mensaje de éxito con estado HTTP 202 (ACCEPTED).
-     */
+    @Operation(
+            summary = "Eliminar detalle de venta por ID",
+            description = "Elimina el detalle de venta con el ID especificado",
+            responses = {
+                    @ApiResponse(responseCode = "202", description = "Detalle eliminado correctamente"),
+                    @ApiResponse(responseCode = "400", description = "ID inválido"),
+                    @ApiResponse(responseCode = "404", description = "Detalle no encontrado")
+            }
+    )
     @DeleteMapping("/{idDetalle}")
     public ResponseEntity<?> eliminarDetalleVenta(@PathVariable Long idDetalle){
         ExceptionUtils.validateId(idDetalle);
@@ -62,13 +66,17 @@ public class DetalleVentaController {
         return new ResponseEntity<>("Detalle eliminado correctamente",  HttpStatus.ACCEPTED);
     }
 
-    /**
-     * Actualiza los datos de un detalle de venta existente.
-     * 
-     * @param idDetalle Identificador del detalle de venta a actualizar.
-     * @param detalledto Objeto DetalleDTO con los datos actualizados.
-     * @return Detalle de venta actualizado con estado HTTP 200 (OK).
-     */
+
+    @Operation(
+            summary = "Editar detalle de venta",
+            description = "Actualiza el detalle de venta con los datos enviados en el DTO",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Detalle actualizado",
+                            content = @Content(schema = @Schema(implementation = DetalleVenta.class))),
+                    @ApiResponse(responseCode = "400", description = "ID inválido o datos inválidos"),
+                    @ApiResponse(responseCode = "404", description = "Detalle no encontrado")
+            }
+    )
     @PutMapping("/{idDetalle}")
     public ResponseEntity<DetalleVenta> editarDetalleVenta(@PathVariable Long idDetalle, @RequestBody DetalleDTO detalledto){
         ExceptionUtils.validateId(idDetalle);

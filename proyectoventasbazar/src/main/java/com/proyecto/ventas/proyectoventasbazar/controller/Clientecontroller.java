@@ -69,6 +69,22 @@ public class ClienteController {
     
 
     @PostMapping
+    @Operation(
+            summary = "Crear un nuevo cliente",
+            description = "Recibe los datos de un cliente y lo guarda en la base de datos.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Cliente creado exitosamente",
+                            content = @Content(schema = @Schema(implementation = Cliente.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Datos inválidos para crear el cliente",
+                            content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+                    )
+            }
+    )
     public ResponseEntity<Cliente> crearCliente(@Valid @RequestBody Cliente cliente) {
         clienteServ.saveCliente(cliente);
         return new ResponseEntity(cliente, HttpStatus.CREATED);
@@ -97,6 +113,30 @@ public class ClienteController {
 
 
     @PutMapping("/{idCliente}")
+    @Operation(
+            summary = "Editar cliente existente",
+            description = "Actualiza los datos de un cliente identificado por su ID.",
+            parameters = {
+                    @Parameter(name = "idCliente", description = "ID del cliente a editar", required = true)
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Cliente actualizado correctamente",
+                            content = @Content(schema = @Schema(implementation = Cliente.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Datos inválidos para la actualización",
+                            content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Cliente no encontrado",
+                            content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+                    )
+            }
+    )
     public ResponseEntity<Cliente> editarCliente(@PathVariable Long idCliente, @RequestBody Cliente cliente){
         ExceptionUtils.validateId(idCliente);
         clienteServ.editCliente(idCliente, cliente);

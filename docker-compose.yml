@@ -9,13 +9,13 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
-
     environment:
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
-      DB_HOST: db
+      DB_HOST: ${DB_HOST}
       DB_DATABASE: ${MYSQL_DATABASE}
+      USER_JWT: ${USER_JWT}
+      SECRET_JWT: ${SECRET_JWT}
     restart: always
 
 
