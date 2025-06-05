@@ -1,7 +1,7 @@
 services:
 
   api:
-    image: martinlopez05/bazar-api:v5
+    build: .
     ports:
       - "8080:8080"
     networks:
@@ -12,7 +12,9 @@ services:
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_HOST: db
+      DB_DATABASE: ${MYSQL_DATABASE}
     restart: always
+
 
   db:
     image: mysql:8
@@ -25,6 +27,11 @@ services:
       - app_networks
     volumes:
       - data_mysql:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "--password=${MYSQL_ROOT_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
 volumes:

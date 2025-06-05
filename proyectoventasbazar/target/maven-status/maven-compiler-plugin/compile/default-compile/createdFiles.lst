@@ -9,6 +9,7 @@ com\proyecto\ventas\proyectoventasbazar\repository\IRepositoryRoleEntity.class
 com\proyecto\ventas\proyectoventasbazar\service\IClienteService.class
 com\proyecto\ventas\proyectoventasbazar\controller\DetalleVentaController.class
 com\proyecto\ventas\proyectoventasbazar\dto\VentaDTO.class
+com\proyecto\ventas\proyectoventasbazar\config\RoleDataInitializer.class
 com\proyecto\ventas\proyectoventasbazar\exceptions\ExceptionUtils.class
 com\proyecto\ventas\proyectoventasbazar\model\RoleEntity$RoleEntityBuilder.class
 com\proyecto\ventas\proyectoventasbazar\ProyectoventasbazarApplication.class
