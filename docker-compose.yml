@@ -7,7 +7,10 @@ services:
     networks:
       - app_networks
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
+
     environment:
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -17,18 +20,18 @@ services:
 
 
   db:
-    image: mysql:8
+    image: mysql:8.0.33
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
-      - "3306:3306"
+      - "3307:3306"
     networks:
       - app_networks
     volumes:
       - data_mysql:/var/lib/mysql
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "--password=${MYSQL_ROOT_PASSWORD}" ]
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -40,3 +43,4 @@ volumes:
 networks:
   app_networks:
     driver: bridge
+
