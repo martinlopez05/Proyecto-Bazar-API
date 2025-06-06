@@ -15,12 +15,21 @@ La API está diseñada para ser utilizada por un sistema de administración del 
 
 ## Tecnologías Utilizadas
 
-- **Spring Boot:** Framework para desarrollar la API REST.
-- **Spring Data JPA:** Para interactuar con la base de datos utilizando el patrón JPA.
-- **H2 Database (o MySQL/PostgreSQL):** Base de datos en memoria o una base de datos relacional para almacenar la información de clientes, productos y ventas.
-- **Spring Web:** Para manejar las solicitudes HTTP y generar respuestas.
-- **Maven:** Para la gestión de dependencias y construcción del proyecto.
+Spring Boot: Framework para desarrollar la API REST.
 
+Spring Data JPA: Para interactuar con la base de datos utilizando el patrón JPA.
+
+MySQL: Base de datos relacional para almacenar la información de clientes, productos y ventas.
+
+Spring Web: Para manejar las solicitudes HTTP y generar respuestas.
+
+Spring Security + JWT: Para gestionar la autenticación y autorización segura con tokens JWT.
+
+Swagger: Para la documentación interactiva de la API.
+
+Maven: Para la gestión de dependencias y construcción del proyecto.
+
+Docker: Para contenerizar la aplicación y facilitar su despliegue en diferentes entornos.
 ## Captura del Proyecto
 
 ![Captura del Proyecto](./assets/captura1.png)
