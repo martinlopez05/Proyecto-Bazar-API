@@ -15,21 +15,24 @@ La API está diseñada para ser utilizada por un sistema de administración del 
 
 ## Tecnologías Utilizadas
 
-Spring Boot: Framework para desarrollar la API REST.
+**Spring Boot**: Framework para desarrollar la API REST.
 
-Spring Data JPA: Para interactuar con la base de datos utilizando el patrón JPA.
+**Spring Data JPA**: Para interactuar con la base de datos utilizando el patrón JPA.
 
-MySQL: Base de datos relacional para almacenar la información de clientes, productos y ventas.
+**MySQL**: Base de datos relacional para almacenar la información de clientes, productos y ventas.
 
-Spring Web: Para manejar las solicitudes HTTP y generar respuestas.
+**Spring Web**: Para manejar las solicitudes HTTP y generar respuestas.
 
-Spring Security + JWT: Para gestionar la autenticación y autorización segura con tokens JWT.
+**Spring Security + JWT**: Para gestionar la autenticación y autorización segura con tokens JWT.
 
-Swagger: Para la documentación interactiva de la API.
+**Swagger**: Para la documentación interactiva de la API.
 
-Maven: Para la gestión de dependencias y construcción del proyecto.
+**Maven**: Para la gestión de dependencias y construcción del proyecto.
 
-Docker: Para contenerizar la aplicación y facilitar su despliegue en diferentes entornos.
+**Docker**: Para contenerizar la aplicación y facilitar su despliegue en diferentes entornos.
+
+**link a la documentacion de la API**: http://vps-5047108-x.dattaweb.com:8080/doc/swagger-ui/index.html#/
+
 ## Captura del Proyecto
 
 ![Captura del Proyecto](./assets/captura1.png)
