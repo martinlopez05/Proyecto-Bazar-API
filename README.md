@@ -31,8 +31,6 @@ La API está diseñada para ser utilizada por un sistema de administración del 
 
 **Docker**: Para contenerizar la aplicación y facilitar su despliegue en diferentes entornos.
 
-**link a la documentacion de la API**: http://vps-5047108-x.dattaweb.com:8080/doc/swagger-ui/index.html#/
-
 ## Captura del Proyecto
 
 ![Captura del Proyecto](./assets/captura1.png)
